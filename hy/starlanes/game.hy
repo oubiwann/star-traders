@@ -118,6 +118,12 @@
   (print (list (get-outpost-coords)))
   )
 
+(defun next-to-star? (coords)
+  )
+
+(defun next-to-outpost? (coords)
+  )
+
 (defun get-move-char (coords)
   (setv neighbors (get-neighbors coords))
   config.outpost-char)
