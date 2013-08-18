@@ -28,7 +28,7 @@ outlined below.
 Star Trader
 -----------
 
-.. image:: resources/screeshots/BASIC-star-trader-map.png
+.. image:: resources/screeshots/BASIC-star-trader-map-400.png
 
 In *Star Trader*, players travel about the star map buying and selling six types
 of merchandise: uranium, metals, gems, software, heavy equipment, and medicine.
@@ -36,7 +36,7 @@ of merchandise: uranium, metals, gems, software, heavy equipment, and medicine.
 Star Lanes
 -----------
 
-.. image:: resources/screeshots/BASIC-star-lanes-map.jpg
+.. image:: resources/screeshots/BASIC-star-lanes-map-400.png
 
 In *Star Lanes*, players take turns building outposts, creating companies, and
 purchasing stock. 
