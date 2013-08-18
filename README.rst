@@ -36,7 +36,7 @@ of merchandise: uranium, metals, gems, software, heavy equipment, and medicine.
 Star Lanes
 -----------
 
-.. image:: resources/screeshots/BASIC-star-lanes-map.png
+.. image:: resources/screeshots/BASIC-star-lanes-map.jpg
 
 In *Star Lanes*, players take turns building outposts, creating companies, and
 purchasing stock. 
