@@ -4,7 +4,7 @@ Star Traders
 
 *Nostalgic Implementations*
 
-.. image:: resources/screeshots/early-stage-game.png
+.. image:: resources/screeshots/hy-early-stage-game-400.png
 
 
 Background
