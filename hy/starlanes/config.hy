@@ -8,7 +8,7 @@
 (setv outpost-char "+")
 
 (setv xgrid-start (ord "a"))
-(setv xgrid-end (+ (ord "k") 1))
+(setv xgrid-end (+ (ord "e") 1))
 (setv xgrid-size (- xgrid-end xgrid-start))
 (setv xgrid
   (list-comp
@@ -16,7 +16,7 @@
     (x (xrange xgrid-start xgrid-end))))
 
 (setv ygrid-start 1)
-(setv ygrid-max 9)
+(setv ygrid-max 5)
 (setv ygrid-pad (len (str ygrid-max)))
 
 (defun make-y-coord (int)
@@ -43,7 +43,6 @@
 (setv seed 123)
 (setv max-moves 5)
 (setv star-rate 0.05)
-(setv star-map (dict))
 
 (setv company-1 "Altair Starways")
 (setv company-2 "Betelgeuse, Ltd.")

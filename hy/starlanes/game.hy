@@ -4,7 +4,8 @@
 
 
 (defclass Game-Data (object)
-  ((total-moves 0)
+  ((star-map {})
+   (total-moves 0)
    (players [])
    (player-order [])
    (move None)
@@ -19,65 +20,66 @@
   ; do something
   )
 
-(defun update-coords (x y data)
-  (.update config.star-map {(, (config.make-y-coord y) x) data}))
+(defun update-coords (x y data game-data)
+  (.update game-data.star-map {(, (config.make-y-coord y) x) data}))
 
-(defun get-map-items ()
-  (sorted (config.star-map.items)))
+(defun get-map-items (game-data)
+  (sorted (game-data.star-map.items)))
 
-(defun get-open-coords ()
+(defun get-open-coords (game-data)
   (list-comp
     (car data)
-    (data (get-map-items))
+    (data (get-map-items game-data))
     (= (car (cdr data)) config.grid-point)))
 
-(defun get-move-count ()
-  (if (>= (len (get-open-coords)) config.max-moves)
+(defun get-move-count (game-data)
+  (if (>= (len (get-open-coords game-data)) config.max-moves)
     config.max-moves
     (len (get-open-coords))))
 
-(defun get-moves ()
+(defun get-moves (game-data)
   (setv choices (set))
-  (setv move-count (get-move-count))
+  (setv move-count (get-move-count game-data))
   (while (!= move-count (len choices))
     (choices.add
       (random.choice
-        (get-open-coords)))
-    (setv move-count (get-move-count)))
+        (get-open-coords game-data)))
+    (setv move-count (get-move-count game-data)))
   choices)
 
 (defun get-friendly-moves (moves)
   (list-comp
     (+
-      (.join config.space (car x))
-      (car (cdr x)))
+      (.join config.space (slice x 0 -1))
+      (get x -1))
     (x moves)))
 
-(defun print-moves (&optional moves)
+(defun print-moves (game-data &optional moves)
   (if (= moves None)
-    (setv moves (get-moves)))
+    (setv moves (get-moves game-data)))
   (print
     (+ "  "
       (.join config.space
         (get-friendly-moves moves)))))
 
-(defun get-item-coords (item-char)
-  (for ((, coord item) (config.star-map.items))
+(defun get-item-coords (item-char game-data)
+  (for ((, coord item) (game-data.star-map.items))
     (if (= item item-char)
       (yield coord))))
 
-(defun get-star-coords ()
-  (get-item-coords config.star-char))
+(defun get-star-coords (game-data)
+  (get-item-coords config.star-char game-data))
 
-(defun get-outpost-coords ()
-  (get-item-coords config.outpost-char))
+(defun get-outpost-coords (game-data)
+  (get-item-coords config.outpost-char game-data))
 
-(defun -get-company-coords ()
-  (for (company-char in (kwapply (finance.get-companies) {"initials" true}))
-    (yield (get-item-coords company-char))))
+(defun -get-company-coords (game-data)
+  (setv company-chars (kwapply (finance.get-companies) {"initials" true}))
+  (for (company-char company-chars)
+    (yield (get-item-coords company-char game-data))))
 
-(defun get-company-coords ()
-  (apply (itertools.chain) (-get-company-coords)))
+(defun get-company-coords (game-data)
+  (apply (itertools.chain) (-get-company-coords game-data)))
 
 (defun -get-possible-coords (coord filter)
   (filter
@@ -99,33 +101,40 @@
         coord
         util.get-valid-y-coords))))
 
-(defun -get-possible-neighbors (coords)
-  (setv x-coord (ord (car coords)))
-  (setv y-coord (car (cdr coords)))
+(defun get-neighbors (coord)
+  (setv x-coord (ord (car coord)))
+  (setv y-coord (car (cdr coord)))
   (setv xs (-get-possible-x-coords x-coord))
   (setv ys (-get-possible-y-coords y-coord))
   (for (x xs)
     (for (y ys)
-      (if (!= [x y] coords)
+      (if (!= [x y] coord)
         (yield (, (str y) x))))))
 
-(defun get-neighbors (coords)
-  (setv all (-get-possible-neighbors coords))
-  (print (list all))
-  (print config.star-map)
-  (print (config.star-map.keys))
-  (print (list (get-star-coords)))
-  (print (list (get-outpost-coords)))
-  )
+(defun -near-item? (check-coord neighbors all-item-coords)
+  (setv item-neighbors (neighbors.intersection (set all-item-coords)))
+  (print check-coord)
+  (print neighbors)
+  (print (set all-item-coords))
+  (print (in check-coord item-neighbors))
+  (if (in check-coord item-neighbors)
+    true
+    false))
 
-(defun next-to-star? (coords)
-  )
+(defun next-to-star? (coord neighbors game-data)
+  (-near-item? coord neighbors (get-star-coords game-data)))
 
-(defun next-to-outpost? (coords)
-  )
+(defun next-to-outpost? (coord neighbors game-data)
+  (-near-item? coord neighbors (get-outpost-coords game-data)))
 
-(defun get-move-char (coords)
-  (setv neighbors (get-neighbors coords))
+(defun get-move-char (coord game-data)
+  (setv neighbors (set (get-neighbors coord)))
+  (setv coord (, (str (get coord 1)) (get coord 0)))
+  (cond
+    ((next-to-star? coord neighbors game-data)
+      (print "next to a star!"))
+    ((next-to-outpost? coord neighbors game-data)
+      (print "next to an outpost!")))
   config.outpost-char)
 
 (defun -process-illegal-move (moves game-data)
@@ -133,11 +142,12 @@
   (-process-next-move moves game-data))
 
 (defun -process-legal-move (move-choice game-data)
-  (setv coords (util.move->coords move-choice))
-  (setv move-char (get-move-char coords))
-  (update-coords (get coords 0)
-                 (get coords 1)
-                 move-char)
+  (setv coord (util.move->coords move-choice))
+  (setv move-char (get-move-char coord game-data))
+  (update-coords (get coord 0)
+                 (get coord 1)
+                 move-char
+                 game-data)
   (game-data.move.tick))
 
 (defun -process-next-move (moves game-data)
@@ -146,7 +156,7 @@
   (print (+ "\n"
             current-player.name
             ", here are your legal moves for this turn:"))
-  (print-moves moves)
+  (print-moves game-data moves)
   (setv move-choice (.lower (raw-input "\nWhat is your move? ")))
   (cond
     ((in move-choice ["quit" "q"])
@@ -168,7 +178,7 @@
   "quit")
 
 (defun process-next-move (game-data)
-  (setv moves (get-moves))
+  (setv moves (get-moves game-data))
   (if moves
     (-process-next-move moves game-data)
     (game-over "No more moves!")))

@@ -32,37 +32,39 @@
               separator
               config.horiz-divider-term))))
 
-(defun fill-new-map (x y)
+(defun fill-new-map (x y game-data)
   (cond ((<= (random.random) config.star-rate)
           (do
-            (.update config.star-map {(, y x) config.star-char})
+            (.update game-data.star-map {(, y x) config.star-char})
             config.star-char))
         (true
           (do
-            (.update config.star-map {(, y x) config.grid-point})
+            (.update game-data.star-map {(, y x) config.grid-point})
             config.grid-point))))
 
-(defun get-row (fill-function row-num)
+(defun get-row (fill-function row-num game-data)
   (let ((row-data (list)))
     (for (element (get-header))
       (cond ((in element config.xgrid)
-              (.append row-data (fill-function element row-num)))
+              (.append row-data (fill-function element row-num game-data)))
             (true
               (.append row-data config.space))))
     (+ (.join config.null-string row-data)
        config.row-heading-term)))
 
-(defun print-rows (fill-function)
+(defun print-rows (fill-function game-data)
   (for (row-header config.ygrid)
     (print (+ (get-row-header row-header)
-              (get-row fill-function row-header)))))
+              (get-row fill-function row-header game-data)))))
 
 (defun grouper (a)
   (car
     (car a)))
 
-(defun print-map-rows (None)
-  (for ((, row-header items) (itertools.groupby (game.get-map-items) grouper))
+(defun print-map-rows (None game-data)
+  (for ((, row-header items) (itertools.groupby
+                               (game.get-map-items game-data)
+                               grouper))
     (setv row-data (list))
     (for ((, coords item) items)
         (row-data.append item))
@@ -76,17 +78,17 @@
             (* config.horiz-divider-char footer-length)
             config.horiz-divider-term)))
 
-(defun draw-grid (row-function fill-function)
+(defun draw-grid (row-function fill-function game-data)
   (util.clear-screen)
   (let ((buffer-length (get-row-header-buffer))
         (header-length (len (get-header))))
     (print-grid-title buffer-length header-length)
     (print-xgrid-headers buffer-length)
-    (row-function fill-function)
+    (row-function fill-function game-data)
     (print-footer buffer-length header-length)))
 
-(defun draw-new-grid ()
-  (draw-grid print-rows fill-new-map))
+(defun draw-new-grid (game-data)
+  (draw-grid print-rows fill-new-map game-data))
 
-(defun redraw-grid ()
-  (draw-grid print-map-rows None))
+(defun redraw-grid (game-data)
+  (draw-grid print-map-rows None game-data))
