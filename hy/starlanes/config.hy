@@ -3,6 +3,7 @@
 (setv null-string "")
 (setv space " ")
 (setv new-line "\n")
+(setv beep "\a")
 (setv grid-point ".")
 (setv star-char "*")
 (setv outpost-char "+")
@@ -65,4 +66,6 @@
 (setv founding-shares 5)
 (setv dividend-percentage 5)
 (setv max-stock-value 3000)
+
+(setv continue-prompt "Press <RETURN> to continue ...")
 
