@@ -46,4 +46,3 @@
   (set-player-order game-data)
   (print "The order of play is:")
   (print-player-order game-data))
-  ;(raw-input (+ "\n" instructions.prompt)))
