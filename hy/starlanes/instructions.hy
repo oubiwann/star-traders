@@ -1,8 +1,6 @@
 (import (starlanes (config util)))
 
 
-(setv prompt "Press <RETURN> to continue ...")
-
 (setv page-1 ( + "
    Star Lanes is a game of interstellar trading.
 The object of the game is to amass the greatest amount
@@ -122,7 +120,7 @@ the galaxy by typing 'map' to an input statement.
   (for (page pages)
     (util.clear-screen)
     (print page)
-    (raw-input prompt))
+    (raw-input config.continue-prompt))
   (util.clear-screen))
 
 (defun check ()
