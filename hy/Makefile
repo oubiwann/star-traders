@@ -8,9 +8,7 @@ endif
 ACT=$(VENV)/bin/activate
 
 $(VENV):
-	virtualenv $(VENV) \
-	--python=`which python2.7` \
-	--system-site-packages
+	virtualenv $(VENV)
 
 ubuntu-deps:
 ifeq ($(shell which virtualenv),)
