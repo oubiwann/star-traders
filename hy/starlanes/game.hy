@@ -9,18 +9,18 @@
    (players [])
    (player-order [])
    (move None)
-   (companies [])))
+   (companies [])
+   (share-value {})))
 
-(defun display-map ()
+(defun display-map (game-data)
   (import (starlanes (layout)))
   ; XXX pass moves here, so that new moves aren't generated whenever a player
   ; displays the map again
-  (layout.redraw-grid))
+  (layout.redraw-grid game-data))
 
-(defun display-stock (current-player)
+(defun display-stock (game-data)
   (import (starlanes (finance)))
-  ; do something
-  )
+  (finance.display-assets game-data))
 
 (defun update-coords (x y data game-data)
   (.update game-data.star-map {(, (config.make-y-coord y) x) data}))
@@ -130,10 +130,12 @@
   (setv coord (, (str (get coord 1)) (get coord 0)))
   (cond
     ((next-to-star? neighbors game-data)
-      (print "next to a star!"))
+      ; XXX we'll need to check here for no other companies near by, too...
+      (finance.create-company-star game-data))
     ((next-to-outpost? neighbors game-data)
-      (print "next to an outpost!")))
-  config.outpost-char)
+      (finance.create-company-outpost game-data))
+    (true
+      config.outpost-char)))
 
 (defun -process-illegal-move (moves game-data)
   (print "That space was not included in the list ...")
@@ -146,6 +148,7 @@
                  (get coord 1)
                  move-char
                  game-data)
+  (finance.display-assets game-data)
   (game-data.move.tick))
 
 (defun -process-next-move (moves game-data)
@@ -163,9 +166,9 @@
       ; XXX currently this also gives new random moves/choices; choices should
       ; remain the same after redraws and only change when it's the next
       ; player's turn
-      (display-map))
+      (display-map game-data))
     ((= move-choice "stock")
-      (display-stock current-player))
+      (display-stock game-data))
     ((not (in move-choice (get-friendly-moves moves)))
       (-process-illegal-move moves game-data))
     (true
