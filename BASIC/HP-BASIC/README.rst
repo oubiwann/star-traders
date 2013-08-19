@@ -15,7 +15,7 @@ inherited from DEC through the Compaq acquisition.
 DEC BASIC History
 =================
 
-.. image:: resources/images/DEC-PDP-11-BASIC-PLUS-Language-Manual-Cover.png
+.. image:: resources/images/DEC-PDP-11-BASIC-PLUS-Language-Manual-Cover-400.png
 
 * **1971: BASIC-PLUS** - This is the earliest year I could find reference to
   DEC's BASIC-PLUS for the PDP-11. The manual cover above is from the second
@@ -50,7 +50,7 @@ DEC BASIC History
 HP 2000 BASIC History
 =====================
 
-.. image:: resources/images/HP-2000C-BASIC-A-Guide-to-Time-Shared-BASIC-Cover.png
+.. image:: resources/images/HP-2000C-BASIC-A-Guide-to-Time-Shared-BASIC-Cover-400.png
 
 HP BASIC 2000 is somewhat harder to trace. The manuals I was able to find are
 as follows:
