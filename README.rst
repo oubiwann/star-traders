@@ -39,7 +39,7 @@ Star Lanes
 .. image:: resources/screeshots/BASIC-star-lanes-map-400.png
 
 In *Star Lanes*, players take turns building outposts, creating companies, and
-purchasing stock. 
+purchasing stock.
 
 Implementations
 ===============
