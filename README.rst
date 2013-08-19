@@ -19,7 +19,7 @@ early 80s. (Note that some *Star Lanes* versions of the game still used the
 The *Star Trader* lineage of games inspired a list of excellent games; the
 `Wikipedia article`_ even claims that EVE Online traces its ancestry to
 *Star Trader*. There is also a page that provides a `timeline`_ of
-*Star Trader*.
+*Star Trader*, should you want to explore this further.
 
 The differences of the original two variantes of the game are briefly
 outlined below.
@@ -44,10 +44,8 @@ purchasing stock.
 Implementations
 ===============
 
-For now, the implementations below are focusing on the "Star Lanes" version of
-the game.
-
-Each implementation has its own README:
+For now, the implementations below are focusing on the *Star Lanes* version of
+the game. Each implementation has its own README:
 
 * `Hy`_ (Python Lisp)
 
