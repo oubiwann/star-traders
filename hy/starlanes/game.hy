@@ -13,6 +13,8 @@
 
 (defun display-map ()
   (import (starlanes (layout)))
+  ; XXX pass moves here, so that new moves aren't generated whenever a player
+  ; displays the map again
   (layout.redraw-grid))
 
 (defun display-stock (current-player)
@@ -111,29 +113,25 @@
       (if (!= [x y] coord)
         (yield (, (str y) x))))))
 
-(defun -near-item? (check-coord neighbors all-item-coords)
+(defun -near-item? (neighbors all-item-coords)
   (setv item-neighbors (neighbors.intersection (set all-item-coords)))
-  (print check-coord)
-  (print neighbors)
-  (print (set all-item-coords))
-  (print (in check-coord item-neighbors))
-  (if (in check-coord item-neighbors)
+  (if item-neighbors
     true
     false))
 
-(defun next-to-star? (coord neighbors game-data)
-  (-near-item? coord neighbors (get-star-coords game-data)))
+(defun next-to-star? (neighbors game-data)
+  (-near-item? neighbors (get-star-coords game-data)))
 
-(defun next-to-outpost? (coord neighbors game-data)
-  (-near-item? coord neighbors (get-outpost-coords game-data)))
+(defun next-to-outpost? (neighbors game-data)
+  (-near-item? neighbors (get-outpost-coords game-data)))
 
 (defun get-move-char (coord game-data)
   (setv neighbors (set (get-neighbors coord)))
   (setv coord (, (str (get coord 1)) (get coord 0)))
   (cond
-    ((next-to-star? coord neighbors game-data)
+    ((next-to-star? neighbors game-data)
       (print "next to a star!"))
-    ((next-to-outpost? coord neighbors game-data)
+    ((next-to-outpost? neighbors game-data)
       (print "next to an outpost!")))
   config.outpost-char)
 
