@@ -11,10 +11,12 @@ Background
 ==========
 
 *Star Trader* was a BASIC game written by Dave Kaufman and published by the
-"People's Computer Company" in 1974. Over the years, it was copied and then
-heavily modified, morphing into what became *Star Lanes* by the late 70s and
-early 80s. (Note that some *Star Lanes* versions of the game still used the
-``TRADE.BAS`` filename, while others switched to ``LANES.BAS``.)
+"People's Computer Company" in 1974. It seems to have been written in 1973,
+however.
+
+Over the years, it was copied and then heavily modified, morphing into what
+became *Star Lanes* by the late 70s and early 80s. (Note that some *Star Lanes* versions of the game still used the ``TRADE.BAS`` filename, while others
+switched to ``LANES.BAS``.)
 
 The *Star Trader* lineage of games inspired a list of excellent games; the
 `Wikipedia article`_ even claims that EVE Online traces its ancestry to
