@@ -8,7 +8,7 @@
 (setv outpost-char "+")
 
 (setv xgrid-start (ord "a"))
-(setv xgrid-end (+ (ord "z") 1))
+(setv xgrid-end (+ (ord "e") 1))
 (setv xgrid-size (- xgrid-end xgrid-start))
 (setv xgrid
   (list-comp
@@ -16,7 +16,7 @@
     (x (xrange xgrid-start xgrid-end))))
 
 (setv ygrid-start 1)
-(setv ygrid-max 30)
+(setv ygrid-max 5)
 (setv ygrid-pad (len (str ygrid-max)))
 
 (defun make-y-coord (int)
@@ -54,12 +54,15 @@
 (setv company-8 "Horologii, Inc.")
 (setv company-9 "Innes Industries")
 (setv company-10 "Jabbah Journeyers")
+(setv company-11 "Kapteyn's Outfitters")
+(setv company-12 "Luyten, Ltd.")
 (setv companies [company-1 company-2 company-3 company-4 company-5
-                 company-6 company-7 company-8 company-9 company-10])
+                 company-6 company-7 company-8 company-9 company-10
+                 company-11 company-12])
 (setv max-companies 5)
 (setv share-modifier-star 500)
 (setv share-modifier-outpost 100)
 (setv founding-shares 5)
-(setv divident-percentage 5)
+(setv dividend-percentage 5)
 (setv max-stock-value 3000)
 
