@@ -8,7 +8,7 @@
 (setv outpost-char "+")
 
 (setv xgrid-start (ord "a"))
-(setv xgrid-end (+ (ord "e") 1))
+(setv xgrid-end (+ (ord "z") 1))
 (setv xgrid-size (- xgrid-end xgrid-start))
 (setv xgrid
   (list-comp
@@ -16,7 +16,7 @@
     (x (xrange xgrid-start xgrid-end))))
 
 (setv ygrid-start 1)
-(setv ygrid-max 5)
+(setv ygrid-max 30)
 (setv ygrid-pad (len (str ygrid-max)))
 
 (defun make-y-coord (int)
