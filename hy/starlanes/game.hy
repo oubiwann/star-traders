@@ -4,12 +4,19 @@
 
 
 (defclass Game-Data (object)
+  ; star-map is a dict whose keys are tuples and values are data items. Each
+  ; tuple is a coordinate pair (, y x) and the data that is associated with
+  ; that coordinate pair is the character representing the state of space at
+  ; that coordinate.
+  ;
   ((star-map {})
    (total-moves 0)
    (players [])
    (player-order [])
    (move None)
    (companies [])
+   ; share-value is a dict with the following structure:
+   ;
    (share-value {})))
 
 (defun display-map (game-data)
