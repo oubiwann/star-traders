@@ -4,24 +4,30 @@
 ; Ported to Clojure by Duncan McGreggor, 2013
 (ns starlanes.trader
   (:require [starlanes.game :as game]
+            [starlanes.instructions :as instructions]
             [starlanes.layout :as layout]
+            [starlanes.player :as player]
             [starlanes.util :as util])
   (:gen-class))
 
 
+(defn setup-game []
+  (let [game-init (game/game-data-factory)
+        game-with-star-map (game/create-star-map-for-game game-init)
+        game-with-players (player/set-new-players game-with-star-map)
+        game-with-player-order (player/determine-player-order game-with-players)
+        ]
+    game-with-player-order))
+
 (defn -main []
   (util/clear-screen)
-  (def game-data (game/game-data-factory))
-  ;(player.set-players game-data)
-  ;(player.determine-player-order game-data)
-  ;(instructions.check)
-  (layout/draw-new-grid game-data)
-  (let [data (util/input "What is your answer? ")]
-    (util/display data))
-  ;(setv command (game.process-next-move game-data))
-  ;(while (!= command "quit")
-  ;  (layout.redraw-grid game-data)
-  ;  (if (game.max-turn? game-data)
-  ;    (setv command (game.game-over "Maximum turn limit hit!"))
-  ;    (setv command (game.process-next-move game-data)))))
-  )
+  (let [game-data (setup-game)]
+    (instructions/check)
+    (layout/draw-new-grid game-data)
+    ;(setv command (game.process-next-move game-data))
+    ;(while (!= command "quit")
+    ;  (layout.redraw-grid game-data)
+    ;  (if (game.max-turn? game-data)
+    ;    (setv command (game.game-over "Maximum turn limit hit!"))
+    ;    (setv command (game.process-next-move game-data)))))
+   ))
