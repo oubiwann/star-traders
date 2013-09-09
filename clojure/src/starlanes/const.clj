@@ -3,10 +3,9 @@
 
 (def game-title "Star Traders")
 
-(def null-string "")
+(def items {:star "*" :empty "." :outpost "+"})
+
 (def terminal-bell #(char 7))
-(def grid-point ".")
-(def star-char "*")
 (def outpost-char "+")
 (def grid-spaces 3)
 
@@ -42,7 +41,7 @@
 (def row-heading-init (str \space vert-divider-char \space))
 (def row-heading-term (str \space vert-divider-char))
 
-(def win-by-turns false)
+(def win-by-turns? false)
 (def max-turns 2)
 (def seed 314)
 (def max-moves 5)
