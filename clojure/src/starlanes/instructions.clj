@@ -3,6 +3,31 @@
             [starlanes.const :as const]
             [starlanes.util :as util]))
 
+; Backstory notes:
+;   2030-2080 - specialized space flight and exploratory automated colonization
+;   2080-2110 - first waves of colonization
+;   2110-2260 - establishment of colonies, cutting-edge technologies, emergence
+;               of space-tech as vital player in solar economy (includes
+;               advances in software-generated nanotech, quantum computing,
+;               practical applications of M-theory, radical developments in
+;               space-time modifying "propulsion")
+;   2260-2310 - automated interstellar exploration
+;   2310-2410 - first extrasolar colonies established; many fail
+;   2420-2440 - extrasoloar colonies begin to stabilize; initial interstellar
+;               trade efforts are made
+
+; XXX expand this prelude and begin tweaking the game, once the original port
+; has been completed.
+(def prelude (str "
+   The year is 2454, by Earth-reckoning. Interstellar
+trade is in its infancy, despite interstellar travel
+having been around for almost 200 years. Using the
+great wealth that you and your peers have amassed, you
+have each bet on the future of trade between star
+systems. You each have a different vision of what that
+future looks like and hope to accomplish it by
+exerting influence via the establishment of interstellar
+trade lanes."))
 
 (def page-1 (str "
    Star Lanes is a game of interstellar trading.
