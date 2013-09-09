@@ -9,7 +9,7 @@
    :stock nil})
 
 (defn create-new-player [index]
-  (let [prompt (str "Player " (str (+ index 1)) ", what is your name? ")
+  (let [prompt (str "Player " (str (inc index)) ", what is your name? ")
         player-name (util/input prompt)]
     (conj (player-data-factory) {:name player-name})))
 

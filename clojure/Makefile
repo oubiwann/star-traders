@@ -17,4 +17,5 @@ run: build
 	java -jar $(STANDALONE)
 
 check:
+	@lein kibit
 	@lein test

@@ -42,7 +42,7 @@
     (into
       (sorted-map)
       (map
-        #(-combine-coords %)
+        -combine-coords
         star-map-data))))
 
 (defn create-star-map-for-game [game-data]
@@ -74,7 +74,7 @@
   (remove
     nil?
     (map
-      #(get-empty-coord %)
+      get-empty-coord
       (game-data :star-map))))
 
 (defn get-total-possible-move-count [game-data]
@@ -143,7 +143,7 @@
 
 (defn -get-possible-coords [coord filter-fn]
   (filter-fn
-    [(- coord 1) coord (+ coord 1)]))
+    [(dec coord) coord (inc coord)]))
 
 (defn -get-possible-x-coords [coords]
   )

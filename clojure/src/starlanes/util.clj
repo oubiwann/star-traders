@@ -28,7 +28,7 @@
   (read-line))
 
 (defn mult-str [amount string]
-  (apply str (repeat amount string)))
+  (string/join (repeat amount string)))
 
 (defn ord [chr]
   (int (.charAt chr 0)))
@@ -55,9 +55,9 @@
   (let [string-name (name keyword-coord)
         string-len (count string-name)
         x-coord (take 1 string-name)
-        y-coord (take-last (- string-len 1) string-name)]
-    [(apply str x-coord)
-     (apply str y-coord)]))
+        y-coord (take-last (dec string-len) string-name)]
+    [(string/join x-coord)
+     (string/join y-coord)]))
 
 (defn get-friendly-coord
   "Given a coord (a keyword such as :a23), return a format that is easier for
@@ -91,7 +91,7 @@
   [coords min max]
   (filter-allowed
     coords
-    (range min (+ max 1))))
+    (range min (inc max))))
 
 
 

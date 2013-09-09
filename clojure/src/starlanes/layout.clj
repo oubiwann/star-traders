@@ -22,7 +22,7 @@
 (defn print-grid-title [buffer-width grid-width]
   (let [mid-point (/ grid-width 2)
         title-len (count const/game-title)
-        start-point (+ 1 (- mid-point (/ title-len 2)))
+        start-point (inc (- mid-point (/ title-len 2)))
         fill (util/mult-str (int start-point) \space)
         buffer (util/mult-str buffer-width \space)
         separator (util/mult-str title-len const/horiz-title-heading-char)]

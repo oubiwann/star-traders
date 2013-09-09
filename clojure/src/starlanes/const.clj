@@ -10,7 +10,7 @@
 (def grid-spaces 3)
 
 (def xgrid-start (int (.charAt "a" 0)))
-(def xgrid-end (+ (int (.charAt "e" 0)) 1))
+(def xgrid-end (inc (int (.charAt "e" 0))))
 (def xgrid-size (- xgrid-end xgrid-start))
 (def xgrid
   (for

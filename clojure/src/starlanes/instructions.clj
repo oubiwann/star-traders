@@ -50,7 +50,7 @@ with "
 (rows "
 (str const/ygrid-start) "-" (str const/ygrid-end)
 ", columns "
-(char const/xgrid-start) "-" (char (- const/xgrid-end 1))
+(char const/xgrid-start) "-" (char (dec const/xgrid-end))
 ").  The player, after examining
 the map of the galaxy to decide which space they wish
 to occupy, responds with the row and column of that
