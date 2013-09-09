@@ -1,6 +1,6 @@
 (ns starlanes.game-test
-  (:use clojure.test)
-  (:require [starlanes.game :as game]
+  (:require [clojure.test :refer :all]
+            [starlanes.game :as game]
             [starlanes.util :as util]))
 
 

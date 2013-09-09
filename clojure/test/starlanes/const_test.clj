@@ -1,6 +1,6 @@
 (ns starlanes.const-test
-  (:use clojure.test)
-  (:require [starlanes.const :as const]))
+  (:require [clojure.test :refer :all]
+            [starlanes.const :as const]))
 
 
 (deftest test-xgrid
