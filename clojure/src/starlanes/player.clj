@@ -33,24 +33,33 @@
   ([game-data]
     (conj game-data {:players (doall (get-new-players))})))
 
-(defn get-player-names [game-data]
-  )
-
-(defn get-current-player [game-data]
-  )
-
 (defn set-player-order [game-data]
   (let [player-count (get-player-count game-data)
         indices (range player-count)]
     (conj game-data {:player-order (shuffle indices)})))
 
+(defn get-players-in-order [game-data]
+  (let [players (game-data :players)
+        order (game-data :player-order)]
+    (map #(nth players %) order)))
+
 (defn print-player-order [game-data]
-  (doseq [player-index (game-data :player-order)]
-    (let [player (nth (game-data :players) player-index)]
-      (util/display (str "\t" (player :name) \newline)))))
+  (doseq [player (get-players-in-order game-data)]
+    (util/display (str \tab (player :name) \newline))))
 
 (defn determine-player-order [game-data]
   (let [game-data (set-player-order game-data)]
     (util/display (str "The order of play is:" \newline))
     (print-player-order game-data)
     game-data))
+
+(defn get-current-player [game-data]
+  (let [current-move-index (mod
+                             (game-data :total-moves)
+                             (get-player-count game-data))
+        current-player-index (nth
+                               (game-data :player-order)
+                               current-move-index)]
+    (nth
+      (game-data :players)
+      current-player-index)))
