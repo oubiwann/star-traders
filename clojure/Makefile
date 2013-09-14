@@ -16,6 +16,9 @@ run: build
 	#@lein exec src/starlanes/trader.clj
 	java -jar $(STANDALONE)
 
+test-only:
+	@lein test
+
 check:
 	@lein kibit
 	@lein test

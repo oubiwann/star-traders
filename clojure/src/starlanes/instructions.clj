@@ -151,7 +151,7 @@ the galaxy by typing 'map' to an input statement.
     (util/input (str \newline const/continue-prompt)))
   (util/clear-screen))
 
-(defn check []
+(defn display? []
   (let [print-instructions? (util/input "Does any player need instructions? ")]
     (if (.startsWith (string/lower-case print-instructions?) "y")
       (print-pages))))

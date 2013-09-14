@@ -1,6 +1,5 @@
 (ns starlanes.player
-  (:require [starlanes.game :as game]
-            [starlanes.util :as util]))
+  (:require [starlanes.util :as util]))
 
 
 (defn player-data-factory []
@@ -26,12 +25,6 @@
   ([player-count]
     (for [index (range player-count)]
       (create-new-player index))))
-
-(defn set-new-players
-  ([]
-    (set-new-players (game/game-data-factory)))
-  ([game-data]
-    (conj game-data {:players (doall (get-new-players))})))
 
 (defn set-player-order [game-data]
   (let [player-count (get-player-count game-data)

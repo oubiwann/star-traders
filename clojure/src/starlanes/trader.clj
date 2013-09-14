@@ -14,7 +14,7 @@
 (defn setup-game []
   (let [game-init (game/game-data-factory)
         game-with-star-map (game/create-star-map-for-game game-init)
-        game-with-players (player/set-new-players game-with-star-map)
+        game-with-players (game/set-new-players game-with-star-map)
         game-with-player-order (player/determine-player-order game-with-players)
         ]
     game-with-player-order))
@@ -22,8 +22,8 @@
 (defn -main []
   (util/clear-screen)
   (let [game-data (setup-game)]
-    (instructions/check)
-    (layout/draw-new-grid game-data)
+    (instructions/display?)
+    (game/do-player-turn game-data)
     ;(setv command (game.process-next-move game-data))
     ;(while (!= command "quit")
     ;  (layout.redraw-grid game-data)

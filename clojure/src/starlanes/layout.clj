@@ -1,7 +1,6 @@
 (ns starlanes.layout
   (:require [clojure.string :as string]
             [starlanes.const :as const]
-            [starlanes.game :as game]
             [starlanes.util :as util]))
 
 
@@ -107,7 +106,3 @@
     (print-xgrid-headers buffer-length)
     (print-rows game-data)
     (print-footer buffer-length header-length)))
-
-(defn draw-new-grid [game-data]
-  (let [game-data (game/create-star-map-for-game game-data)]
-    (draw-grid game-data)))

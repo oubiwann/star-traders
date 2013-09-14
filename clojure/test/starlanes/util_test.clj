@@ -10,10 +10,13 @@
         expected "abababab"]
     (is (= result expected))))
 
-(deftest test-mult-str
-  (let [result (util/mult-str 4 "ab")
-        expected "abababab"]
-    (is (= result expected))))
+(deftest test-ord
+  (is (= 97 (util/ord "a")))
+  (is (= 122 (util/ord "z"))))
+
+(deftest test-chr
+  (is (= "a" (util/chr 97)))
+  (is (= "z" (util/chr 122))))
 
 (deftest test-rand-float
   (let [random (util/random 314)
@@ -38,6 +41,11 @@
   (is (= ["b" "12"] (util/keyword->xy :b12)))
   (is (= ["c" "123"] (util/keyword->xy :c123))))
 
+(deftest test-xy->keyword
+  (is (= :a1 (util/xy->keyword ["a" 1])))
+  (is (= :b12 (util/xy->keyword ["b" 12])))
+  (is (= :c123 (util/xy->keyword ["c" "123"]))))
+
 (deftest test-get-friendly-coord
   (is (= "1a" (util/get-friendly-coord :a1)))
   (is (= "12b" (util/get-friendly-coord :b12)))
@@ -53,8 +61,10 @@
   (is (= [:a1 "*"] (util/filter-item [:a1 "*"] (const/items :star))))
   (is (= [:a1 "+"] (util/filter-item [:a1 "+"] (const/items :outpost))))
   (is (= nil (util/filter-item [:a1 "+"] (const/items :star))))
-  (is (= [nil nil nil nil nil nil nil nil nil [:c3 "*"]
-          nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil]
+  (is (= [nil nil nil nil nil nil nil nil nil
+          [:c3 "*"] nil nil nil nil [:e4 "*"]
+          nil nil nil nil nil nil nil [:a1 "*"]
+          nil nil]
          (map #(util/filter-item % (const/items :star))
          (util/fake-game-data :star-map)))))
 
@@ -62,7 +72,25 @@
   (is (= #{2 3 4} (util/filter-allowed [1 2 3 4 5] [2 3 4])))
   (is (= #{[:a2 "*"]} (util/filter-allowed [[:a1 "."] [:a2 "*"]] [[:a2 "*"]]))))
 
-(deftest test-get-valid-coord-range
-  (is (= [] (util/get-valid-coord-range [:a1] 97 104)))
-  )
+(deftest test-get-x-coord-range
+  (is (= ["a" "b" "c" "d" "e"] (util/get-x-coord-range))))
 
+(deftest test-get-y-coord-range
+  (is (= [1 2 3 4 5] (util/get-y-coord-range))))
+
+(deftest test-in?
+  (is (= true (util/in? [1 2] 1)))
+  (is (= true (util/in? [1 2] 2)))
+  (is (= false (util/in? [1 2] 0)))
+  (is (= false (util/in? [1 2] 3))))
+
+(deftest test-x-coord?
+  (is (= true (util/x-coord? "a")))
+  (is (= true (util/x-coord? "e")))
+  (is (= false (util/x-coord? "f"))))
+
+(deftest test-y-coord?
+  (is (= false (util/y-coord? 0)))
+  (is (= true (util/y-coord? 1)))
+  (is (= true (util/y-coord? 5)))
+  (is (= false (util/y-coord? 6))))
