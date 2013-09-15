@@ -7,5 +7,6 @@
 (defn display-stock [game-data]
   (util/display
     (str \newline "Here's your current stock: " \newline \newline))
-  (util/input const/continue-prompt))
+  (util/input const/continue-prompt)
+  nil)
 
