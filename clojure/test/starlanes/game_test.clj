@@ -13,10 +13,10 @@
            (str 0.75192976)))))
 
 (deftest test-update-coords
-  (let [game-data (game/update-coords "a" "01" "+" (game/game-data-factory))]
+  (let [game-data (game/update-coords "1a" "+" (game/game-data-factory))]
     (is (= (game-data :star-map) {:a1 "+"}))
-    (let [game-data (game/update-coords "a" "02" "E" game-data)]
-      (is (= (game-data :star-map) {:a1 "+", :a2 "E"})))))
+    (let [game-data (game/update-coords "02a" "E" game-data)]
+      (is (= (game-data :star-map) {:a1 "+", :a02 "E"})))))
 
 (deftest test-create-item
   (is (= (game/create-item 0.04) "*"))

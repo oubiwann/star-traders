@@ -2,10 +2,13 @@
   (:require [clojure.math.combinatorics :as combi]
             [clojure.string :as string]
             [starlanes.const :as const]
+            [starlanes.finance :as finance]
             [starlanes.layout :as layout]
             [starlanes.player :as player]
             [starlanes.util :as util]))
 
+
+(declare do-player-turn)
 
 (defn game-data-factory []
   {:star-map (sorted-map),
@@ -60,11 +63,10 @@
 (defn update-coords
   "Return a new game-data data structure with a new item at the given
   coordinates."
-  [x y coord-item game-data]
-  (let [y (const/make-y-coord y)
-        coord-key (keyword (str x y))
+  [move coord-item game-data]
+  (let [keyword-coord (util/move->keyword move)
         old-star-map (game-data :star-map)
-        new-star-map (conj old-star-map [coord-key coord-item])]
+        new-star-map (conj old-star-map [keyword-coord coord-item])]
     (conj game-data {:star-map new-star-map})))
 
 (defn inc-move
@@ -111,7 +113,7 @@
       ((player/get-current-player game-data) :name)
       ", here are your legal moves for this turn:"
       \newline
-      "    "
+      "  "
       (string/join
         \space moves)
       \newline)))
@@ -190,11 +192,82 @@
 (defn next-to-company? [keyword-coord game-data]
   )
 
+(defn get-player-move []
+  (util/input (str \newline "What is your move? ")))
+
+(defn do-bad-input [game-data available-moves input]
+  (util/display (str \newline "Whoops! Your input of '" input
+                     "' was not understood. Please try again."
+                     \newline \newline))
+  (util/input const/continue-prompt)
+  (do-player-turn game-data available-moves))
+
+(defn get-character-for-move [game-data move]
+  "+")
+
+(defn process-move [game-data move]
+  (let [item-char (get-character-for-move game-data move)]
+    (do-player-turn
+      (inc-move
+        (update-coords move item-char game-data)))))
+
+(defn save-game [game-data]
+  (util/display (str \newline
+                     "Saving game ..." \newline \newline))
+  ; XXX actually implement this!
+  (util/input const/continue-prompt))
+
+(defn tally-scores [game-data]
+  (util/display (str \newline
+                     "Tallying scores ..." \newline))
+  ; XXX get top-score
+  ; XXX determine tie-breaking, if necessary
+  ; XXX display "scoreboard"
+  )
+
+(defn quit-game [game-data]
+  (util/display (str \newline
+                     "You have asked to quit the game." \newline))
+  (let [answer (util/input const/confirm-prompt)]
+    (cond
+      (= answer "y") (do (tally-scores game-data) (util/exit)))))
+
+(defn process-command [game-data available-moves command]
+  (cond
+    (util/in? ["map" "m"] command) true
+    (= command "save") (save-game game-data)
+    (util/in? ["stock" "s"] command) (finance/display-stock game-data)
+    (util/in? ["quit" "q" "exit" "x"] command) (quit-game game-data))
+  (do-player-turn game-data available-moves))
+
+(defn validate-move [game-data available-moves move]
+  (cond
+    (util/in? available-moves move)
+      (process-move game-data move)
+    (util/in? const/commands move)
+      (process-command game-data available-moves move)
+    :else (do-bad-input game-data available-moves move)))
+
+(defn check-remaining-moves [available-moves game-data]
+  ; XXX get the number of moves requires for each player to move during the
+  ;     current turn
+  ; XXX if that is greater than the current number of moves left, gp into
+  ;     end-game mode, displaying message about the reason for the end
+  #_(tally-scores game-data)
+  #_(util/exit))
+
+(defn display-map-and-moves [game-data available-moves]
+  (check-remaining-moves available-moves game-data)
+  (layout/draw-grid game-data)
+  (print-moves available-moves game-data))
+
 (defn do-player-turn
   ([game-data]
-    (do-player-turn (get-friendly-moves game-data) game-data))
-  ([available-moves game-data]
-    (layout/draw-grid game-data)
-    (print-moves available-moves game-data)
-    )
-  )
+    (do-player-turn game-data (get-friendly-moves game-data)))
+  ([game-data available-moves]
+    (display-map-and-moves game-data available-moves)
+    (validate-move
+      game-data
+      available-moves
+      (string/lower-case
+        (get-player-move)))))
