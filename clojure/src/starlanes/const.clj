@@ -70,3 +70,6 @@
 (def max-stock-value 3000)
 
 (def continue-prompt "Press <RETURN> to continue ...")
+(def confirm-prompt "Are you sure? [N/y] ")
+
+(def commands ["stock" "s" "map" "m" "save" "quit" "q" "exit" "x"])
