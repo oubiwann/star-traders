@@ -5,12 +5,10 @@ build:
 	@lein uberjar
 
 clean:
-	@echo
+	rm -rf target
 
 shell:
 	@lein repl
-
-clean-all: clean clean-venv
 
 run: build
 	#@lein exec src/starlanes/trader.clj
