@@ -148,3 +148,6 @@
 
 (defn y-coord? [y-coord]
   (in? (get-y-coord-range) y-coord))
+
+(defn serialize-game-data [game-data]
+  (conj game-data {:rand nil}))
