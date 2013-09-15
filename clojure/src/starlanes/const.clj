@@ -72,4 +72,5 @@
 (def continue-prompt "Press <RETURN> to continue ...")
 (def confirm-prompt "Are you sure? [N/y] ")
 
-(def commands ["stock" "s" "map" "m" "save" "quit" "q" "exit" "x"])
+(def commands ["stock" "s" "map" "m" "order" "save" "load"
+               "help" "commands" "quit" "q" "exit" "x"])
