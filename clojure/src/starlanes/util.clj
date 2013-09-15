@@ -21,6 +21,10 @@
 (defn display [data]
   (.print (System/out) data))
 
+(defn exit []
+  (display (str \newline "Shutting down game ... " \newline))
+  (System/exit 0))
+
 (defn clear-screen []
   (display "\u001b[2J")
   (display "\u001B[0;0f"))
@@ -53,16 +57,22 @@
     (= (last coord) empty-string) true
     :else false))
 
+(defn string->xy
+  "Given a string coordinate, return the x and y components as a vector."
+  [string-coord]
+  (let [string-len (count string-coord)
+        x-coord (take 1 string-coord)
+        y-coord (take-last (dec string-len) string-coord)]
+    [(string/join x-coord)
+     (string/join y-coord)]))
+
 (defn keyword->xy
   "Given a coordinate in keyword-form, return the x and y components as a
    vector."
   [keyword-coord]
   (let [string-name (name keyword-coord)
-        string-len (count string-name)
-        x-coord (take 1 string-name)
-        y-coord (take-last (dec string-len) string-name)]
-    [(string/join x-coord)
-     (string/join y-coord)]))
+        [x-coord y-coord] (string->xy string-name)]
+    [x-coord y-coord]))
 
 (defn xy->keyword
   "Given a sequence of two items, each representing an x and y value for a
@@ -70,6 +80,21 @@
   [xy-pair]
   (keyword
     (string/join xy-pair)))
+
+(defn move->string-coord
+  "Give a player move (a string of the form 'yx'), convert it to a string
+  coordinate (a string of the form 'xy')."
+  [move]
+  (let [x-coord (str (last move))
+        [y-coord] (string/split move #"[a-z]")]
+    (str x-coord y-coord)))
+
+(defn move->keyword
+  "Given a player move coordinate (a string of the form 'yx') convert to a
+  keyword coordinate (of the form :xy)."
+  [move]
+  (let [xy-coords (string->xy (move->string-coord move))]
+    (xy->keyword xy-coords)))
 
 (defn get-friendly-coord
   "Given a coord (a keyword such as :a23), return a format that is easier for

@@ -36,6 +36,11 @@
   (is (= false (util/coord-open? [:a1 "."] "+")))
   (is (= false (util/coord-open? [:a1 "."] "A"))))
 
+(deftest test-string->xy
+  (is (= ["a" "1"] (util/string->xy "a1")))
+  (is (= ["b" "12"] (util/string->xy "b12")))
+  (is (= ["c" "123"] (util/string->xy "c123"))))
+
 (deftest test-keyword->xy
   (is (= ["a" "1"] (util/keyword->xy :a1)))
   (is (= ["b" "12"] (util/keyword->xy :b12)))
@@ -45,6 +50,16 @@
   (is (= :a1 (util/xy->keyword ["a" 1])))
   (is (= :b12 (util/xy->keyword ["b" 12])))
   (is (= :c123 (util/xy->keyword ["c" "123"]))))
+
+(deftest test-move->string-coord
+  (is (= "a1" (util/move->string-coord "1a")))
+  (is (= "a12" (util/move->string-coord "12a")))
+  (is (= "a123" (util/move->string-coord "123a"))))
+
+(deftest test-move->keyword
+  (is (= :a1 (util/move->keyword "1a")))
+  (is (= :a12 (util/move->keyword "12a")))
+  (is (= :a123 (util/move->keyword "123a"))))
 
 (deftest test-get-friendly-coord
   (is (= "1a" (util/get-friendly-coord :a1)))
