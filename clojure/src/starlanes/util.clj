@@ -3,6 +3,7 @@
             [clojure.set :refer [intersection]]
             [starlanes.const :as const]))
 
+
 (def fake-game-data
   {:star-map
     {:a1 "*", :a2 ".", :a3 ".", :a4 ".", :a5 ".",
