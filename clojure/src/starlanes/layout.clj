@@ -26,7 +26,7 @@
         buffer (util/mult-str buffer-width \space)
         separator (util/mult-str title-len const/horiz-title-heading-char)]
     (util/display (str buffer fill const/game-title \newline))
-    (util/display (str buffer fill separator \newline))))
+    (util/display (str buffer fill separator \newline \newline))))
 
 (defn print-xgrid-headers [buffer-length]
   (let [header (get-header)
