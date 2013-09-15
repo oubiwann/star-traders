@@ -205,17 +205,60 @@
 (defn get-character-for-move [game-data move]
   "+")
 
-(defn process-move [game-data move]
-  (let [item-char (get-character-for-move game-data move)]
-    (do-player-turn
-      (inc-move
-        (update-coords move item-char game-data)))))
+(defn serialize-game-data [game-data]
+  (conj game-data {:rand nil}))
 
 (defn save-game [game-data]
-  (util/display (str \newline
-                     "Saving game ..." \newline \newline))
-  ; XXX actually implement this!
-  (util/input const/continue-prompt))
+  (let [filename (util/input
+                    (str \newline
+                         "Enter the filename for the game data: "))]
+    (util/display
+      (str \newline
+           "Saving game to '" filename "' ..."
+           \newline \newline))
+    (spit filename (serialize-game-data game-data))
+    (util/input const/continue-prompt)
+    nil))
+
+(defn -load-game []
+
+  (let [filename (util/input
+                   (str \newline
+                        "Ennter the saved game file you want to load: "))
+        game-data (read-string (slurp filename))]
+    (util/display
+      (str \newline
+           "Loaded game-data from '" filename "'."
+           \newline \newline))
+    (util/input const/continue-prompt)
+    game-data))
+
+(defn load-game []
+  (let [check (util/input
+                (str \newline
+                     "This will overwrite your current game."
+                     const/confirm-prompt))]
+    (cond
+      (= (string/lower-case check) "y") (-load-game))))
+
+(defn compute-stock-value [{stock :stock value :value}]
+  (* stock value))
+
+(defn compute-stocks-value [stocks-data]
+  (reduce + (map compute-stock-value stocks-data)))
+
+(defn compute-value
+  "The assets parameter is a mapwhich has the following structure:
+    {:cash <float> :stock <integer> :value <float>}
+  where :value is stock price of the associated stock.
+  "
+  ([assets]
+    (apply compute-value assets))
+  ([cash stocks-data]
+    (+ cash (compute-stocks-value stocks-data))))
+
+(defn display-value [value]
+  )
 
 (defn tally-scores [game-data]
   (util/display (str \newline
@@ -225,6 +268,19 @@
   ; XXX display "scoreboard"
   )
 
+(defn display-player-order [game-data]
+  (util/display (str \newline))
+  (player/print-player-order game-data)
+  (util/display (str \newline))
+  (util/input const/continue-prompt)
+  nil)
+
+(defn display-help []
+  nil)
+
+(defn display-commands []
+  nil)
+
 (defn quit-game [game-data]
   (util/display (str \newline
                      "You have asked to quit the game." \newline))
@@ -232,13 +288,29 @@
     (cond
       (= answer "y") (do (tally-scores game-data) (util/exit)))))
 
-(defn process-command [game-data available-moves command]
+(defn parse-command [game-data command]
   (cond
-    (util/in? ["map" "m"] command) true
+    (util/in? ["map" "m"] command) nil
+    (util/in? ["order" "o"] command) (display-player-order game-data)
+    (util/in? ["help" "h"] command) (display-help)
+    (= command "commands") (display-commands)
     (= command "save") (save-game game-data)
+    (= command "load") (load-game)
     (util/in? ["stock" "s"] command) (finance/display-stock game-data)
-    (util/in? ["quit" "q" "exit" "x"] command) (quit-game game-data))
-  (do-player-turn game-data available-moves))
+    (util/in? ["quit" "q" "exit" "x"] command) (quit-game game-data)))
+
+(defn process-command [game-data available-moves command]
+  (let [post-parse-game-data (parse-command game-data command)]
+    (cond
+      (nil? post-parse-game-data) (do-player-turn game-data available-moves)
+      :else (do-player-turn post-parse-game-data)
+      )))
+
+(defn process-move [game-data move]
+  (let [item-char (get-character-for-move game-data move)]
+    (do-player-turn
+      (inc-move
+        (update-coords move item-char game-data)))))
 
 (defn validate-move [game-data available-moves move]
   (cond
