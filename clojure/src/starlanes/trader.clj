@@ -3,7 +3,7 @@
 ; MODIFIED FOR THE MICROBEE BY JOHN ZAITSEFF, 1988
 ; Ported to Clojure by Duncan McGreggor, 2013
 (ns starlanes.trader
-  (:require [starlanes.game :as game]
+  (:require [starlanes.game.base :as game]
             [starlanes.instructions :as instructions]
             [starlanes.layout :as layout]
             [starlanes.player :as player]
