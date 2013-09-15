@@ -1,19 +1,12 @@
-(ns starlanes.game-test
+(ns starlanes.game.map-test
   (:require [clojure.test :refer :all]
-            [starlanes.game :as game]
+            [starlanes.game.base :as base]
+            [starlanes.game.map :as game]
             [starlanes.util :as util]))
 
 
-(deftest test-game-data-factory
-  (let [game-data (game/game-data-factory)]
-    (is (= (game-data :star-map) {}))
-    (is (= (game-data :total-moves) 0))
-    (is (= (game-data :companies) []))
-    (is (= (str (util/rand-float (game-data :rand)))
-           (str 0.75192976)))))
-
 (deftest test-update-coords
-  (let [game-data (game/update-coords "1a" "+" (game/game-data-factory))]
+  (let [game-data (game/update-coords "1a" "+" (base/game-data-factory))]
     (is (= (game-data :star-map) {:a1 "+"}))
     (let [game-data (game/update-coords "02a" "E" game-data)]
       (is (= (game-data :star-map) {:a1 "+", :a02 "E"})))))
@@ -75,10 +68,3 @@
   (is (= true (game/next-to-star? :e5 util/fake-game-data)))
   (is (= true (game/next-to-star? :d2 util/fake-game-data)))
   (is (= true (game/next-to-star? :d3 util/fake-game-data))))
-
-(deftest test-compute-value
-  (let [assets [1000 [{:stock 12 :value 23.50} {:stock 100 :value 50}]]]
-    (is (= 6282.0 (game/compute-value assets)))
-    (is (= 6282.0 (game/compute-value (first assets) (second assets))))))
-
-

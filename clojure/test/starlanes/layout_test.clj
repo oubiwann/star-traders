@@ -1,6 +1,6 @@
 (ns starlanes.layout-test
   (:require [clojure.test :refer :all]
-            [starlanes.game :as game]
+            [starlanes.game.base :as game]
             [starlanes.layout :as layout]
             [starlanes.util :as util]))
 
