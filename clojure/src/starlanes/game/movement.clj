@@ -2,7 +2,6 @@
   (:require [clojure.string :as string]
             [starlanes.const :as const]
             [starlanes.game.map :as game-map]
-            [starlanes.player :as player]
             [starlanes.util :as util]))
 
 
@@ -12,6 +11,14 @@
   (conj
     game-data
     {:total-moves (inc (game-data :total-moves))}))
+
+(defn get-remaining-moves [game-data]
+  (count (game-map/get-open-coords game-data)))
+
+(defn get-current-move-index [game-data]
+  (mod
+    (game-data :total-moves)
+    (util/get-player-count game-data)))
 
 (defn get-total-possible-move-count [game-data]
   (let [open-coords (count (game-map/get-open-coords game-data))]
@@ -36,7 +43,7 @@
   "+")
 
 (defn check-remaining-moves [available-moves game-data]
-  ; XXX get the number of moves requires for each player to move during the
+  ; XXX get the number of moves required for each player to move during the
   ;     current turn
   ; XXX if that is greater than the current number of moves left, gp into
   ;     end-game mode, displaying message about the reason for the end
