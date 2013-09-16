@@ -152,3 +152,11 @@
 
 (defn serialize-game-data [game-data]
   (conj game-data {:rand nil}))
+
+(defn get-players [game-data]
+  (game-data :players))
+
+(defn get-player-count [game-data]
+  (count (get-players game-data)))
+
+
