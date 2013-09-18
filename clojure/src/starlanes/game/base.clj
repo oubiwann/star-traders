@@ -5,6 +5,7 @@
             [starlanes.game.map :as game-map]
             [starlanes.game.movement :as game-move]
             [starlanes.game.command :as game-command]
+            [starlanes.instructions :as instructions]
             [starlanes.layout :as layout]
             [starlanes.player :as player]
             [starlanes.util :as util]))
@@ -32,13 +33,16 @@
   ([game-data]
     (conj game-data {:players (doall (player/get-new-players))})))
 
-(defn setup-game []
+(defn setup-game [& {:keys [first-time?] :or {first-time? true}}]
   (util/clear-screen)
   (let [game-init (game-data-factory)
         game-with-star-map (create-star-map-for-game game-init)
         game-with-players (set-new-players game-with-star-map)
         game-with-player-order (player/determine-player-order game-with-players)
         ]
+    (cond
+      first-time? (instructions/display?)
+      :else (util/input (str \newline const/continue-prompt)))
     game-with-player-order))
 
 (defn get-player-move []

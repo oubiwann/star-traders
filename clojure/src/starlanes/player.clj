@@ -35,7 +35,10 @@
   (doseq [player (get-players-in-order game-data)]
     (util/display (str \tab (player :name) \newline))))
 
-(defn determine-player-order [game-data]
+; XXX fix up parameters to display instructions for first-time play, or
+; display a "continue" prompt for a play-again scenario...
+(defn determine-player-order
+  [game-data]
   (let [game-data (set-player-order game-data)]
     (util/display (str "The order of play is:" \newline))
     (print-player-order game-data)

@@ -11,5 +11,4 @@
 
 (defn -main []
   (let [game-data (game/setup-game)]
-    (instructions/display?)
     (game/do-player-turn game-data)))
