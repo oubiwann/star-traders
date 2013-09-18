@@ -32,6 +32,15 @@
   ([game-data]
     (conj game-data {:players (doall (player/get-new-players))})))
 
+(defn setup-game []
+  (util/clear-screen)
+  (let [game-init (game-data-factory)
+        game-with-star-map (create-star-map-for-game game-init)
+        game-with-players (set-new-players game-with-star-map)
+        game-with-player-order (player/determine-player-order game-with-players)
+        ]
+    game-with-player-order))
+
 (defn get-player-move []
   (util/input (str \newline "What is your move? ")))
 
@@ -89,9 +98,18 @@
       (game-move/inc-move
         (game-map/update-coords move item-char game-data)))))
 
+(defn play-again? []
+  (let [response (util/input
+                   (str \newline "Would you like to play again? [Y/n] "))]
+    (cond
+      (.startsWith (string/lower-case response) "n") false
+      :else true)))
+
 (defn do-endgame [game-data]
   (tally-scores game-data)
-  (util/exit))
+  (cond
+    (play-again?) (do-player-turn (setup-game))
+    :else (util/exit)))
 
 (defn -display-map-and-moves [game-data available-moves]
   (layout/draw-grid game-data)
@@ -102,7 +120,6 @@
   (cond
     (game-move/moves-remain? game-data)
       (-display-map-and-moves game-data available-moves)
-    ; hrm, what about "play again" option? where should that go?
     :else (do-endgame game-data)))
 
 (defn do-bad-input [game-data available-moves input]
