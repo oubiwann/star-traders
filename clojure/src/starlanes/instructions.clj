@@ -43,7 +43,7 @@ larger one as described below.
 
     Each turn, the computer will present the player
 with "
-(str const/max-moves)
+(str const/max-moves-choices)
 " prospective spaces to occupy on a "
 (str const/ygrid-end) "x" (str const/xgrid-size)
 " matrix

@@ -109,3 +109,24 @@
   (is (= true (util/y-coord? 1)))
   (is (= true (util/y-coord? 5)))
   (is (= false (util/y-coord? 6))))
+
+(deftest test-serialize-game-data
+  (is (= {:rand nil} (util/serialize-game-data {:rand "hey!"}))))
+
+(deftest test-get-players
+  (is (= ["Alice" "Bob" "Carol"]
+         (map #(% :name) (util/get-players util/fake-game-data)))))
+
+(deftest test-get-players
+  (is (= 3 (util/get-player-count util/fake-game-data))))
+
+(deftest test-get-max-total-moves
+  (is (= 6 (util/get-max-total-moves util/fake-game-data)))
+  (is (= 9 (util/get-max-total-moves 3 3)))
+  (is (= 40 (util/get-max-total-moves 10 4)))
+  (is (= 15 (util/get-max-total-moves 1 15)))
+  (is (= 1 (util/get-max-total-moves 1 1)))
+  (is (= 0 (util/get-max-total-moves 0 0))))
+
+
+

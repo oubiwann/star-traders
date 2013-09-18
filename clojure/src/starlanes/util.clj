@@ -12,8 +12,11 @@
      :d1 ".", :d2 ".", :d3 ".", :d4 ".", :d5 ".",
      :e1 ".", :e2 ".", :e3 ".", :e4 "*", :e5 "."},
    :total-moves 0,
-   :players [{:stock nil, :name "Alice", :cash 0.0}],
-   :player-order [0],
+   :players [
+    {:stock nil, :name "Alice", :cash 0.0},
+    {:stock nil, :name "Bob", :cash 0.0},
+    {:stock nil, :name "Carol", :cash 0.0}],
+   :player-order [1 0],
    :move 0,
    :companies [],
    :share-value {},
@@ -158,5 +161,12 @@
 
 (defn get-player-count [game-data]
   (count (get-players game-data)))
+
+(defn get-max-total-moves
+  "This function should only be used when when win-by-turns? is set to 'true'."
+  ([game-data]
+    (get-max-total-moves const/max-turns (get-player-count game-data)))
+  ([max-turns player-count]
+    (* max-turns player-count)))
 
 

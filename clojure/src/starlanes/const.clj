@@ -41,10 +41,13 @@
 (def row-heading-init (str \space vert-divider-char \space))
 (def row-heading-term (str \space vert-divider-char))
 
-(def win-by-turns? false)
+(def win-by-turns? true)
 (def max-turns 2)
 (def seed 314)
-(def max-moves 5)
+; mex-moves-choices is the maximum allowed number of randomly-generated moves
+; that will be offered to the player as options during a turn. By default,
+; users are presented with 5 choices from which they can select their move.
+(def max-moves-choices 5)
 (def star-rate 0.05)
 
 (def company-1 "Altair Starways")

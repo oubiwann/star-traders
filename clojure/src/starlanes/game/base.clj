@@ -89,10 +89,21 @@
       (game-move/inc-move
         (game-map/update-coords move item-char game-data)))))
 
-(defn display-map-and-moves [game-data available-moves]
-  (game-move/check-remaining-moves available-moves game-data)
+(defn do-endgame [game-data]
+  (tally-scores game-data)
+  (util/exit))
+
+(defn -display-map-and-moves [game-data available-moves]
   (layout/draw-grid game-data)
+  (util/display (game-move/moves-remain? game-data))
   (game-command/display-moves available-moves game-data))
+
+(defn display-map-and-moves [game-data available-moves]
+  (cond
+    (game-move/moves-remain? game-data)
+      (-display-map-and-moves game-data available-moves)
+    ; hrm, what about "play again" option? where should that go?
+    :else (do-endgame game-data)))
 
 (defn do-bad-input [game-data available-moves input]
   (util/display (str \newline "Whoops! Your input of '" input
