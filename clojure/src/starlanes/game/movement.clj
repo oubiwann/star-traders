@@ -2,6 +2,7 @@
   (:require [clojure.string :as string]
             [starlanes.const :as const]
             [starlanes.game.map :as game-map]
+            [starlanes.finance :as finance]
             [starlanes.util :as util]))
 
 
@@ -29,8 +30,24 @@
     util/get-friendly-coord
     (get-moves game-data)))
 
-(defn get-character-for-move [game-data move]
-  "+")
+(defn update-map-with-move
+  [move game-data]
+  (let [keyword-coord (util/move->keyword move)]
+    (cond
+      ; is the move next to a company?
+      (game-map/next-to-company? keyword-coord game-data)
+        (finance/perform-company-merger keyword-coord game-data)
+      ; more than one company?
+      ; which company has the highest value?
+      ; is the move next to a star?
+      (game-map/next-to-star? keyword-coord game-data)
+        (finance/create-star-company keyword-coord game-data)
+      ; is the move next to an outpost?
+      (game-map/next-to-outpost? keyword-coord game-data)
+        (finance/create-outpost-company keyword-coord game-data)
+      ; if no neighbors at all, make it an outpost
+      :else
+        (game-map/update-coords move (const/items :outpost) game-data))))
 
 (defn -moves-remain?
   ([game-data]

@@ -1,8 +1,13 @@
 (ns starlanes.finance
   (:require [starlanes.const :as const]
-            [starlanes.player :as player]
+            [starlanes.game.map :as game-map]
             [starlanes.util :as util]))
 
+
+(defn company-factory []
+  {:name ""
+   :share-mod 0.0
+   :units 0})
 
 (defn display-stock [game-data]
   (util/display
@@ -19,8 +24,7 @@
 (defn compute-value
   "The assets parameter is a mapwhich has the following structure:
     {:cash <float> :stock <integer> :value <float>}
-  where :value is stock price of the associated stock.
-  "
+  where :value is stock price of the associated stock."
   ([assets]
     (apply compute-value assets))
   ([cash stocks-data]
@@ -29,3 +33,64 @@
 (defn display-value [value]
   )
 
+(defn get-companies []
+  (take const/max-companies const/companies))
+
+(defn get-next-company [game-data]
+  (let [current-count (count (game-data :companies))
+        next-index (inc current-count)])
+  )
+
+(defn create-new-company [name units share-mod]
+  (assoc (company-factory) :name name :units units :share-mod share-mod))
+
+(defn add-company [units share-mod game-data]
+  (let [available (game-data :companies-queue)
+        company-name (first available)
+        game-data (conj game-data {:companies-queue (rest available)})
+        company (create-new-company company-name units share-mod)
+        companies (concat (game-data :companies) [company])]
+    [company-name (conj game-data {:companies companies})]))
+
+(defn filter-company
+  "Reomve company data whose names match the passed name."
+  [company-name companies]
+  (filter
+    (fn [x]
+      (not (= (x :name) company-name)))
+    companies))
+
+(defn remove-company [company-name game-data]
+  (let [companies-queue (sort
+                          (concat
+                            (game-data :companies-queue) [company-name]))
+        companies (filter-company company-name (game-data :companies))]
+    (conj game-data {:companies companies :companies-queue companies-queue})))
+
+(defn update-player-shares []
+  )
+
+(defn update-company-share-mod []
+  )
+
+(defn perform-company-merger
+  ""
+  [keyword-coord game-data]
+  (const/items :outpost))
+
+(defn create-star-company
+  "Return a vector of [<single character> <game data>]"
+  [keyword-coord game-data]
+  (const/items :outpost))
+
+(defn create-outpost-company
+  "Return a vector of [<single character> <game data>]"
+  [keyword-coord game-data]
+  (let [outpost-coords (game-map/get-neighbor-outposts
+                         keyword-coord game-data)
+        units (count outpost-coords)
+       [company-name game-data] (add-company
+                                  units const/share-modifier-outpost
+                                  game-data)]
+    ))
+    ;[(const/items :outpost) game-data]))

@@ -14,13 +14,14 @@
 (declare do-player-turn)
 
 (defn game-data-factory []
-  {:star-map (sorted-map),
-   :total-moves 0,
-   :players [],
-   :player-order [],
-   :move 0,
-   :companies [],
-   :share-value {},
+  {:star-map (sorted-map)
+   :total-moves 0
+   :players []
+   :player-order []
+   :move 0
+   :companies []
+   :companies-queue (finance/get-companies)
+   :share-value {}
    :rand (util/random const/seed)})
 
 (defn create-star-map-for-game [game-data]
@@ -68,7 +69,7 @@
       (game-command/display-score game-data)
     (util/in? ["help" "h"] command)
       (game-command/display-help)
-    (= command "commands")
+    (util/in? "commands" "c" command)
       (game-command/display-commands)
     (= command "save")
       (game-command/save-game game-data)
@@ -97,10 +98,9 @@
       )))
 
 (defn process-move [game-data move]
-  (let [item-char (game-move/get-character-for-move game-data move)]
-    (do-player-turn
-      (game-move/inc-move
-        (game-map/update-coords move item-char game-data)))))
+  (do-player-turn
+    (game-move/inc-move
+      (game-move/update-map-with-move move game-data))))
 
 (defn play-again? []
   (let [response (util/input
@@ -110,6 +110,8 @@
       :else true)))
 
 (defn do-endgame [game-data]
+  ; display last version of map
+  (layout/draw-grid game-data)
   (tally-scores game-data)
   (cond
     (play-again?) (do-player-turn (setup-game))

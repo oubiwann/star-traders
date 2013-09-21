@@ -50,21 +50,19 @@
 (def max-moves-choices 5)
 (def star-rate 0.05)
 
-(def company-1 "Altair Starways")
-(def company-2 "Betelgeuse, Ltd.")
-(def company-3 "Capella Cargo Co.")
-(def company-4 "Denebola Shippers")
-(def company-5 "Eridani Expediters")
-(def company-6 "Fomalhaut Freighters")
-(def company-7 "Gamma Corvi Cartel")
-(def company-8 "Horologii, Inc.")
-(def company-9 "Innes Industries")
-(def company-10 "Jabbah Journeyers")
-(def company-11 "Kapteyn's Outfitters")
-(def company-12 "Luyten, Ltd.")
-(def companies [company-1 company-2 company-3 company-4 company-5
-                company-6 company-7 company-8 company-9 company-10
-                company-11 company-12])
+(def companies ["Altair Starways"
+                "Betelgeuse, Ltd."
+                "Capella Cargo Co."
+                "Denebola Shippers"
+                "Eridani Expediters"
+                "Fomalhaut Freighters"
+                "Gamma Corvi Cartel"
+                "Horologii Holdings"
+                "Innes Industries"
+                "Jabbah Journeyers"
+                "Kapteyn's Outfitters"
+                "Luyten, Ltd."])
+
 (def max-companies 5)
 (def share-modifier-star 500)
 (def share-modifier-outpost 100)
@@ -77,5 +75,5 @@
 
 (def commands ["stock" "s" "map" "m" "order" "o" "score"
                "save" "load"
-               "help" "commands"
+               "help" "h" "commands" "c"
                "quit" "q" "exit" "x"])

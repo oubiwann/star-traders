@@ -5,7 +5,7 @@
 
 
 (deftest test-get-remainin-moves
-  (is (= 22 (game/get-remaining-moves util/fake-game-data))))
+  (is (= 21 (game/get-remaining-moves util/fake-game-data))))
 
 (deftest test-moves-remain-many
   (is (= 6 (game/-moves-remain? util/fake-game-data))))

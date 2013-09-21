@@ -57,6 +57,18 @@
   (is (= '(:d4 :d5 :e4)
          (game/get-neighbors :e5))))
 
+(deftest test-get-item-neighbors
+  (is (= [[:a1 "*"] [:a3 "."] [:b1 "."] [:b2 "."] [:b3 "."]]
+         (game/get-item-neighbors :a2 util/fake-game-data))))
+
+(deftest test-get-neighbor-stars
+  (is (= [[:a1 "*"]]
+         (game/get-neighbor-stars :a2 util/fake-game-data))))
+
+(deftest test-get-neighbor-outposts
+  (is (= [[:c5 "+"]]
+         (game/get-neighbor-outposts :d5 util/fake-game-data))))
+
 (deftest test-next-to-star?
   (is (= true (game/next-to-star? :a2 util/fake-game-data)))
   (is (= true (game/next-to-star? :b1 util/fake-game-data)))

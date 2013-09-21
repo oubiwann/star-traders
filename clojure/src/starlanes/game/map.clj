@@ -44,6 +44,11 @@
         new-star-map (conj old-star-map [keyword-coord coord-item])]
     (conj game-data {:star-map new-star-map})))
 
+(defn multi-update-coords
+  ""
+  [moves coord-items game-data]
+  )
+
 (defn get-empty-coord [coord-data]
   (if (util/coord-open? coord-data (const/items :empty))
     (first coord-data)))
@@ -54,6 +59,9 @@
     (map
       get-empty-coord
       (game-data :star-map))))
+
+(defn get-item [keyword-coord game-data]
+  ((game-data :star-map) keyword-coord))
 
 (defn get-item-coords [item-char game-data]
   (remove
@@ -115,6 +123,30 @@
   (map
     (comp keyword string/join)
     (get-neighbors-pairs keyword-coord)))
+
+(defn get-item-neighbors [keyword-coord game-data]
+  (map (fn [x] [x (get-item x game-data)]) (get-neighbors keyword-coord)))
+
+(defn company? [xy-coord])
+
+(defn star? [xy-coord]
+  (cond
+    (= (second xy-coord) (const/items :star)) true
+    :else false))
+
+(defn outpost? [xy-coord]
+  (cond
+    (= (second xy-coord) (const/items :outpost)) true
+    :else false))
+
+(defn get-neighbor-companies [keyword-coord game-data]
+  (filter company? (get-item-neighbors keyword-coord game-data)))
+
+(defn get-neighbor-stars [keyword-coord game-data]
+  (filter star? (get-item-neighbors keyword-coord game-data)))
+
+(defn get-neighbor-outposts [keyword-coord game-data]
+  (filter outpost? (get-item-neighbors keyword-coord game-data)))
 
 (defn near-item? [keyword-coord coords-for-items]
   (let [items-neighbors (flatten (map get-neighbors coords-for-items))]

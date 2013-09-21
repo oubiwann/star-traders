@@ -4,8 +4,8 @@
 
 
 (defn player-data-factory []
-  {:name "",
-   :cash 0.0,
+  {:name ""
+   :cash 0.0
    :stock nil})
 
 (defn create-new-player [index]
