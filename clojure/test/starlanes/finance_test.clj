@@ -34,13 +34,16 @@
 
 (deftest test-add-company
   (is (= [] (util/fake-game-data :companies)))
-  (let [game-data (finance/add-company 2 55.00 util/fake-game-data)]
+  (let [[company-name game-data] (finance/add-company
+                                   2 55.00 util/fake-game-data)]
     (is (= [{:share-mod 55.0 :units 2 :name "Al"}] (game-data :companies)))
     (is (= ["Be" "Ca" "De" "Er"] (game-data :companies-queue)))
-    (let [game-data (finance/add-company 3 22.00 game-data)]
+    (is (= "Al" company-name))
+    (let [[company-name game-data] (finance/add-company 3 22.00 game-data)]
       (is (= [{:share-mod 55.0 :units 2 :name "Al"}
               {:share-mod 22.0 :units 3 :name "Be"}] (game-data :companies)))
-      (is (= ["Ca" "De" "Er"] (game-data :companies-queue))))))
+      (is (= ["Ca" "De" "Er"] (game-data :companies-queue)))
+      (is (= "Be" company-name)))))
 
 (deftest test-filter-company
   (let [companies [{:name "A" :units 1 :share-mod 0.01}
