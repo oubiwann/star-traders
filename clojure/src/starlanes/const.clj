@@ -13,9 +13,9 @@
 (def xgrid-end (inc (int (.charAt "e" 0))))
 (def xgrid-size (- xgrid-end xgrid-start))
 (def xgrid
-  (for
-    [x (range xgrid-start xgrid-end)]
-    (str (char x))))
+  (map
+    (comp str char)
+    (range xgrid-start xgrid-end)))
 
 (def ygrid-start 1)
 (def ygrid-end 5)
@@ -27,9 +27,7 @@
 (def ygrid-end (+ ygrid-start ygrid-end))
 
 (def ygrid
-  (for
-    [y (range ygrid-start ygrid-end)]
-    (str y)))
+  (map str (range ygrid-start ygrid-end)))
 
 (def horiz-title-heading-char "=")
 (def horiz-divider-char "-")

@@ -94,8 +94,7 @@
           available-moves)
       :else
         (do-player-turn
-          post-parse-game-data)
-      )))
+          post-parse-game-data))))
 
 (defn process-move [game-data move]
   (do-player-turn
