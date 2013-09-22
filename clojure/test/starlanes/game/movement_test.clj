@@ -45,3 +45,7 @@
       (is (= 0 (game/-moves-remain?
                   win-by-turns max-moves moves-so-far remaining))))))
 
+(deftest test-legal?
+  (is (= true (game/legal? ["a" "b" "c"] "a")))
+  (is (= false (game/legal? ["a" "b" "c"] "d"))))
+

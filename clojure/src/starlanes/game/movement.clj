@@ -13,6 +13,11 @@
     game-data
     {:total-moves (inc (game-data :total-moves))}))
 
+(defn legal?
+  "A predicate useful for determining validity of entered player moves."
+  [available-moves move]
+  (util/in? available-moves move))
+
 (defn get-remaining-moves [game-data]
   (count (game-map/get-open-coords game-data)))
 

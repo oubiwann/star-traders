@@ -7,16 +7,37 @@
             [starlanes.util :as util]))
 
 
+(def commands [
+  {:command "stock" :alias "s" :help "show the current player's assets"}
+  {:command "map" :alias "m" :help "show the star map"}
+  {:command "order" :alias "o" :help "show the order of play"}
+  {:command "score" :alias "" :help "show the current score"}
+  {:command "save" :alias "" :help "save the current state of the game"}
+  {:command "load" :alias "" :help "replace current game with saved one"}
+  {:command "commands" :alias "c" :help "display list of available commands"}
+  {:command "help" :alias "h" :help "display commands information"}
+  {:command "restart" :alias "" :help "restart the game"}
+  {:command "quit" :alias "q" :help "shutdown the game; same as 'exit'"}
+  {:command "exit" :alias "x" :help "shutdown the game; same as 'quit'"}])
+
 (defn get-commands
   ([]
     (map
       (fn [x] (remove empty? [(x :command) (x :alias)]))
-      const/commands))
+      commands))
   ([command-name]
     (flatten
       (filter
         (fn [x] (= command-name (first x)))
         (get-commands)))))
+
+(defn get-legal-commands []
+  (flatten (get-commands)))
+
+(defn legal?
+  "A predicate useful for determining validity of entered player commands."
+  [command]
+  (util/in? (get-legal-commands) command))
 
 (defn display-moves [moves game-data]
   (util/display
