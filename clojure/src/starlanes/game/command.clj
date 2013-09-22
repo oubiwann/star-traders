@@ -3,6 +3,7 @@
             [starlanes.const :as const]
             [starlanes.finance :as finance]
             [starlanes.game.movement :as game-move]
+            [starlanes.instructions :as instructions]
             [starlanes.player :as player]
             [starlanes.util :as util]))
 
@@ -51,19 +52,41 @@
       \newline)))
 
 (defn display-player-order [game-data]
-  (util/display (str \newline))
+  (util/display \newline)
   (player/print-player-order game-data)
-  (util/display (str \newline))
+  (util/display \newline)
   (util/input const/continue-prompt)
   nil)
 
 (defn display-score [game-data]
   nil)
 
-(defn display-help []
-  nil)
+(defn display-commands-no-prompt []
+  (util/display \newline)
+  (util/display (str "Here is a list of available commands:" \newline \newline))
+  (doseq [{command :command alias :alias help :help} commands]
+    (cond
+      (empty? alias)
+        (util/display (str \tab command " - " help \newline))
+      :else
+        (util/display (str \tab command ", " alias " - " help \newline))))
+  (util/display \newline))
 
 (defn display-commands []
+  (display-commands-no-prompt)
+  (util/input const/continue-prompt)
+  nil)
+
+(defn display-help []
+  (util/display \newline)
+  (util/display
+    (str "You have been presented with a list of possible moves. " \newline
+         "You may either enter one of those moves or enter a legal " \newline
+         "command." \newline))
+  (display-commands-no-prompt)
+  (util/display \newline)
+  (instructions/display?)
+  (util/display \newline)
   nil)
 
 (defn save-game [game-data]
