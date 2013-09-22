@@ -48,12 +48,14 @@
     (cond
       ; is the move next to a company?
       (game-map/next-to-company? keyword-coord game-data)
-        (finance/perform-company-merger keyword-coord game-data)
+        (finance/perform-company-merger
+          keyword-coord (get-current-player game-data) game-data)
       ; more than one company?
       ; which company has the highest value?
       ; is the move next to a star?
       (game-map/next-to-star? keyword-coord game-data)
-        (finance/create-star-company keyword-coord game-data)
+        (finance/create-star-company
+          keyword-coord (get-current-player game-data) game-data)
       ; is the move next to an outpost?
       (game-map/next-to-outpost? keyword-coord game-data)
         (finance/create-outpost-company

@@ -72,19 +72,23 @@
   (util/display
     (str
       "A new company has been formed!" \newline \newline
-      company-name " was founded by " (inc units)
-      " " type "s." \newline
+      company-name " was founded by " units
+      " " type "." \newline
       )))
 
 (defn announce-player-bonus [current-player company-name units mod]
   (util/display
     (str
       \newline (current-player :name)
-      ", you have been awarded " (inc units) " shares in " \newline
+      ", you have been awarded " units " share(s) in " \newline
       company-name ", currently valued at " \newline
-      (* (inc units) mod) " "
+      (* units mod) " "
       const/currency-name "s each." \newline \newline))
   (util/input const/continue-prompt))
+
+(defn make-announcements [current-player company-name units mod type]
+  (announce-new-company company-name units type)
+  (announce-player-bonus current-player company-name units mod))
 
 (defn update-player-stock [current-player units game-data]
   game-data
@@ -92,8 +96,23 @@
 
 (defn create-star-company
   "Update the game data with a new company created from adjacent outposts."
-  [keyword-coord game-data]
-  (const/items :outpost))
+  [keyword-coord current-player game-data]
+  (let [units 1
+        [company-name game-data] (add-company
+                                   units
+                                   const/share-modifier-star
+                                   game-data)
+        item-char (str (first company-name))]
+    (make-announcements
+      current-player company-name units const/share-modifier-star
+      "star-proximity base")
+    (update-player-stock
+      current-player
+      units
+      (game-map/update-coords
+        keyword-coord
+        item-char
+        game-data))))
 
 (defn create-outpost-company
   "Update the game data with a new company created from adjacent outposts."
@@ -106,9 +125,12 @@
                                   const/share-modifier-outpost
                                   game-data)
        item-char (str (first company-name))]
-    (announce-new-company company-name units "outpost")
-    (announce-player-bonus
-      current-player company-name units const/share-modifier-outpost)
+    (make-announcements
+      current-player company-name (inc units) const/share-modifier-outpost
+      "outposts")
+    ;(announce-new-company company-name units "outposts")
+    ;(announce-player-bonus
+    ;  current-player company-name units const/share-modifier-outpost)
     (update-player-stock
       current-player
       units
@@ -122,6 +144,6 @@
 
 (defn perform-company-merger
   ""
-  [keyword-coord game-data]
+  [keyword-coord current-player game-data]
   (const/items :outpost))
 
