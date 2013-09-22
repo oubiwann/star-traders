@@ -20,3 +20,5 @@ test-only:
 check:
 	@lein kibit
 	@lein test
+	@lein cloverage  --text --html
+	@cat target/coverage/coverage.txt
