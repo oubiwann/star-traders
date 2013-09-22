@@ -1,17 +1,24 @@
 (ns starlanes.player
-  (:require [starlanes.game.movement :as game-move]
-            [starlanes.util :as util]))
+  (:require [starlanes.util :as util]))
 
 
 (defn player-data-factory []
+  "Elements of stock will be maps, each having an entry for the company name
+  and the number of shares held for that company."
   {:name ""
    :cash 0.0
-   :stock nil})
+   :stock []})
 
 (defn create-new-player [index]
   (let [prompt (str "Player " (str (inc index)) ", what is your name? ")
         player-name (util/input prompt)]
     (conj (player-data-factory) {:name player-name})))
+
+; XXX implement a validator for player count; an error shouldn't be thrown
+; when a user doesn't enter an integer. With bad input, retry. Also,
+; this should check for maximum number of players, too.
+(defn validate-player-count [input]
+  )
 
 (defn get-new-players
   ([]
@@ -43,13 +50,3 @@
     (util/display (str "The order of play is:" \newline))
     (print-player-order game-data)
     game-data))
-
-(defn get-current-player-index [game-data]
-  (nth
-    (game-data :player-order)
-    (game-move/get-current-move-index game-data)))
-
-(defn get-current-player [game-data]
-  (nth
-    (game-data :players)
-    (get-current-player-index game-data)))

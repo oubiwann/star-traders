@@ -21,6 +21,16 @@
     (game-data :total-moves)
     (util/get-player-count game-data)))
 
+(defn get-current-player-index [game-data]
+  (nth
+    (game-data :player-order)
+    (get-current-move-index game-data)))
+
+(defn get-current-player [game-data]
+  (nth
+    (game-data :players)
+    (get-current-player-index game-data)))
+
 (defn get-moves [game-data]
   (let [open-coords (game-map/get-open-coords game-data)]
     (take const/max-moves-choices (shuffle open-coords))))
@@ -31,6 +41,8 @@
     (get-moves game-data)))
 
 (defn update-map-with-move
+  "Return new game data with a contained star-map that takes into consideration
+  the move just passed."
   [move game-data]
   (let [keyword-coord (util/move->keyword move)]
     (cond
@@ -44,10 +56,14 @@
         (finance/create-star-company keyword-coord game-data)
       ; is the move next to an outpost?
       (game-map/next-to-outpost? keyword-coord game-data)
-        (finance/create-outpost-company keyword-coord game-data)
+        (finance/create-outpost-company
+          keyword-coord (get-current-player game-data) game-data)
       ; if no neighbors at all, make it an outpost
       :else
-        (game-map/update-coords move (const/items :outpost) game-data))))
+        (game-map/update-coords
+          keyword-coord
+          (const/items :outpost)
+          game-data))))
 
 (defn -moves-remain?
   ([game-data]

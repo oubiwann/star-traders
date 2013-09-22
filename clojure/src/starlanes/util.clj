@@ -34,6 +34,11 @@
   (display "\u001b[2J")
   (display "\u001B[0;0f"))
 
+(defn beep []
+  (clear-screen)
+  (display (char 7))
+  (clear-screen))
+
 (defn input [prompt]
   (display prompt)
   (read-line))

@@ -6,9 +6,9 @@
 
 
 (deftest test-update-coords
-  (let [game-data (game/update-coords "1a" "+" (base/game-data-factory))]
+  (let [game-data (game/update-coords :a1 "+" (base/game-data-factory))]
     (is (= (game-data :star-map) {:a1 "+"}))
-    (let [game-data (game/update-coords "02a" "E" game-data)]
+    (let [game-data (game/update-coords :a02 "E" game-data)]
       (is (= (game-data :star-map) {:a1 "+", :a02 "E"})))))
 
 (deftest test-create-item

@@ -5,7 +5,6 @@
 
 (def items {:star "*" :empty "." :outpost "+"})
 
-(def terminal-bell #(char 7))
 (def outpost-char "+")
 (def grid-spaces 3)
 
@@ -39,7 +38,7 @@
 (def row-heading-init (str \space vert-divider-char \space))
 (def row-heading-term (str \space vert-divider-char))
 
-(def win-by-turns? true)
+(def win-by-turns? false)
 (def max-turns 2)
 (def seed 314)
 ; mex-moves-choices is the maximum allowed number of randomly-generated moves
@@ -67,11 +66,12 @@
 (def founding-shares 5)
 (def dividend-percentage 5)
 (def max-stock-value 3000)
+(def currency-name "credit")
 
 (def continue-prompt "Press <RETURN> to continue ...")
 (def confirm-prompt "Are you sure? [N/y] ")
 
 (def commands ["stock" "s" "map" "m" "order" "o" "score"
                "save" "load"
-               "help" "h" "commands" "c"
+               "help" "h" "commands" "c" "restart"
                "quit" "q" "exit" "x"])

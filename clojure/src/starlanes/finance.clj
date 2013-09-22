@@ -57,7 +57,7 @@
   [company-name companies]
   (filter
     (fn [x]
-      (not (= (x :name) company-name)))
+      (not= (x :name) company-name))
     companies))
 
 (defn remove-company [company-name game-data]
@@ -67,8 +67,55 @@
         companies (filter-company company-name (game-data :companies))]
     (conj game-data {:companies companies :companies-queue companies-queue})))
 
-(defn update-player-shares []
+(defn announce-new-company [company-name units type]
+  (util/beep)
+  (util/display
+    (str
+      "A new company has been formed!" \newline \newline
+      company-name " was founded by " (inc units)
+      " " type "s." \newline
+      )))
+
+(defn announce-player-bonus [current-player company-name units mod]
+  (util/display
+    (str
+      \newline (current-player :name)
+      ", you have been awarded " (inc units) " shares in " \newline
+      company-name ", currently valued at " \newline
+      (* (inc units) mod) " "
+      const/currency-name "s each." \newline \newline))
+  (util/input const/continue-prompt))
+
+(defn update-player-stock [current-player units game-data]
+  game-data
   )
+
+(defn create-star-company
+  "Update the game data with a new company created from adjacent outposts."
+  [keyword-coord game-data]
+  (const/items :outpost))
+
+(defn create-outpost-company
+  "Update the game data with a new company created from adjacent outposts."
+  [keyword-coord current-player game-data]
+  (let [outpost-coords (map first (game-map/get-neighbor-outposts
+                                    keyword-coord game-data))
+        units (count outpost-coords)
+       [company-name game-data] (add-company
+                                  units
+                                  const/share-modifier-outpost
+                                  game-data)
+       item-char (str (first company-name))]
+    (announce-new-company company-name units "outpost")
+    (announce-player-bonus
+      current-player company-name units const/share-modifier-outpost)
+    (update-player-stock
+      current-player
+      units
+      (game-map/multi-update-coords
+        (concat outpost-coords [keyword-coord])
+        item-char
+        game-data))))
 
 (defn update-company-share-mod []
   )
@@ -78,19 +125,3 @@
   [keyword-coord game-data]
   (const/items :outpost))
 
-(defn create-star-company
-  "Return a vector of [<single character> <game data>]"
-  [keyword-coord game-data]
-  (const/items :outpost))
-
-(defn create-outpost-company
-  "Return a vector of [<single character> <game data>]"
-  [keyword-coord game-data]
-  (let [outpost-coords (game-map/get-neighbor-outposts
-                         keyword-coord game-data)
-        units (count outpost-coords)
-       [company-name game-data] (add-company
-                                  units const/share-modifier-outpost
-                                  game-data)]
-    ))
-    ;[(const/items :outpost) game-data]))

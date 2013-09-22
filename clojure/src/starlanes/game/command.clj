@@ -2,6 +2,7 @@
   (:require [clojure.string :as string]
             [starlanes.const :as const]
             [starlanes.finance :as finance]
+            [starlanes.game.movement :as game-move]
             [starlanes.player :as player]
             [starlanes.util :as util]))
 
@@ -10,7 +11,7 @@
   (util/display
     (str
       \newline
-      ((player/get-current-player game-data) :name)
+      ((game-move/get-current-player game-data) :name)
       ", here are your legal moves for this turn:"
       \newline
       "  "

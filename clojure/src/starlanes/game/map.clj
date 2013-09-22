@@ -38,16 +38,23 @@
 (defn update-coords
   "Return a new game-data data structure with a new item at the given
   coordinates."
-  [move coord-item game-data]
-  (let [keyword-coord (util/move->keyword move)
-        old-star-map (game-data :star-map)
+  [keyword-coord coord-item game-data]
+  (let [old-star-map (game-data :star-map)
         new-star-map (conj old-star-map [keyword-coord coord-item])]
     (conj game-data {:star-map new-star-map})))
 
 (defn multi-update-coords
   ""
-  [moves coord-items game-data]
-  )
+  [keyword-coords coord-item game-data]
+  (let [keyword-coord (first keyword-coords)
+        remaining (rest keyword-coords)]
+  (cond
+    (not (nil? keyword-coord))
+      (multi-update-coords
+        remaining
+        coord-item
+        (update-coords keyword-coord coord-item game-data))
+    :else game-data)))
 
 (defn get-empty-coord [coord-data]
   (if (util/coord-open? coord-data (const/items :empty))

@@ -69,7 +69,7 @@
       (game-command/display-score game-data)
     (util/in? ["help" "h"] command)
       (game-command/display-help)
-    (util/in? "commands" "c" command)
+    (util/in? ["commands" "c"] command)
       (game-command/display-commands)
     (= command "save")
       (game-command/save-game game-data)
@@ -77,6 +77,8 @@
       (game-command/load-game)
     (util/in? ["stock" "s"] command)
       (finance/display-stock game-data)
+    (= command "restart")
+      (setup-game)
     (util/in? ["quit" "q" "exit" "x"] command)
       (game-command/quit-game tally-scores game-data)))
 
@@ -118,7 +120,6 @@
 
 (defn -display-map-and-moves [game-data available-moves]
   (layout/draw-grid game-data)
-  (util/display (game-move/moves-remain? game-data))
   (game-command/display-moves available-moves game-data))
 
 (defn display-map-and-moves [game-data available-moves]
