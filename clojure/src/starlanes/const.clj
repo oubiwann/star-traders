@@ -71,7 +71,16 @@
 (def continue-prompt "Press <RETURN> to continue ...")
 (def confirm-prompt "Are you sure? [N/y] ")
 
-(def commands ["stock" "s" "map" "m" "order" "o" "score"
-               "save" "load"
-               "help" "h" "commands" "c" "restart"
-               "quit" "q" "exit" "x"])
+(def commands [
+  {:command "stock" :alias "s" :help "show the current player's assets"}
+  {:command "map" :alias "m" :help "show the star map"}
+  {:command "order" :alias "o" :help "show the order of play"}
+  {:command "score" :alias "" :help "show the current score"}
+  {:command "save" :alias "" :help "save the current state of the game"}
+  {:command "load" :alias "" :help "replace current game with saved one"}
+  {:command "commands" :alias "c" :help "display list of available commands"}
+  {:command "help" :alias "h" :help "display commands information"}
+  {:command "restart" :alias "" :help "restart the game"}
+  {:command "quit" :alias "q" :help "shutdown the game; same as 'exit'"}
+  {:command "exit" :alias "x" :help "shutdown the game; same as 'quit'"}])
+

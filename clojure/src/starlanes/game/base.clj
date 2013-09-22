@@ -62,24 +62,26 @@
   all the rest should return 'nil'."
   [game-data command]
   (cond
-    (util/in? ["map" "m"] command) nil
-    (util/in? ["order" "o"] command)
+    (util/in? (game-command/get-commands "map") command)
+      nil
+    (util/in? (game-command/get-commands "order") command)
       (game-command/display-player-order game-data)
-    (= command "score")
+    (util/in? (game-command/get-commands "store") command)
       (game-command/display-score game-data)
-    (util/in? ["help" "h"] command)
+    (util/in? (game-command/get-commands "help") command)
       (game-command/display-help)
-    (util/in? ["commands" "c"] command)
+    (util/in? (game-command/get-commands "commands") command)
       (game-command/display-commands)
-    (= command "save")
+    (util/in? (game-command/get-commands "save") command)
       (game-command/save-game game-data)
-    (= command "load")
+    (util/in? (game-command/get-commands "load") command)
       (game-command/load-game)
-    (util/in? ["stock" "s"] command)
+    (util/in? (game-command/get-commands "stock") command)
       (finance/display-stock game-data)
-    (= command "restart")
+    (util/in? (game-command/get-commands "restart") command)
       (setup-game)
-    (util/in? ["quit" "q" "exit" "x"] command)
+    (or (util/in? (game-command/get-commands "quit") command)
+        (util/in? (game-command/get-commands "exit") command))
       (game-command/quit-game tally-scores game-data)))
 
 (defn process-command
@@ -141,7 +143,7 @@
   (cond
     (util/in? available-moves move)
       (process-move game-data move)
-    (util/in? const/commands move)
+    (util/in? (flatten (util/get-commands)) move)
       (process-command game-data available-moves move)
     :else (do-bad-input game-data available-moves move)))
 

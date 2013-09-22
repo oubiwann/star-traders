@@ -169,10 +169,12 @@
   (count (get-players game-data)))
 
 (defn get-max-total-moves
-  "This function should only be used when when win-by-turns? is set to 'true'."
+  "This function should only be used when win-by-turns? is set to 'true'."
   ([game-data]
     (get-max-total-moves const/max-turns (get-player-count game-data)))
   ([max-turns player-count]
     (* max-turns player-count)))
+
+
 
 

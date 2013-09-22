@@ -128,9 +128,6 @@
     (make-announcements
       current-player company-name (inc units) const/share-modifier-outpost
       "outposts")
-    ;(announce-new-company company-name units "outposts")
-    ;(announce-player-bonus
-    ;  current-player company-name units const/share-modifier-outpost)
     (update-player-stock
       current-player
       units

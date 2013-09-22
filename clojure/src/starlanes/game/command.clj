@@ -7,6 +7,17 @@
             [starlanes.util :as util]))
 
 
+(defn get-commands
+  ([]
+    (map
+      (fn [x] (remove empty? [(x :command) (x :alias)]))
+      const/commands))
+  ([command-name]
+    (flatten
+      (filter
+        (fn [x] (= command-name (first x)))
+        (get-commands)))))
+
 (defn display-moves [moves game-data]
   (util/display
     (str
