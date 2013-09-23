@@ -53,7 +53,7 @@
     (cond
       ; is the move next to a company?
       (game-map/next-to-company? keyword-coord game-data)
-        (finance/perform-company-merger
+        (finance/merge-companies
           keyword-coord (get-current-player game-data) game-data)
       ; more than one company?
       ; which company has the highest value?

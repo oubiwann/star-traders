@@ -4,6 +4,16 @@
             [starlanes.util :as util]))
 
 
+(deftest test-get-new-company
+  (let [result (finance/get-new-company)]
+    (is (= (result :name) ""))
+    (is (= (result :units) 0))
+    (is (= (result :share-mod) 0.0)))
+  (let [result (finance/get-new-company "A" 2 25.00)]
+    (is (= (result :name) "A"))
+    (is (= (result :units) 2))
+    (is (= (result :share-mod) 25.00))))
+
 (deftest compute-stock-value
   )
 
@@ -25,12 +35,6 @@
 
 (deftest test-get-next-company
   )
-
-(deftest test-create-new-company
-  (let [result (finance/create-new-company "A" 2 25.00)]
-    (is (= (result :name) "A"))
-    (is (= (result :units) 2))
-    (is (= (result :share-mod) 25.00))))
 
 (deftest test-add-company
   (is (= [] (util/fake-game-data :companies)))

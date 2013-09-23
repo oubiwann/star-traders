@@ -9,17 +9,17 @@
 
 
 (def commands [
-  {:command "stock" :alias "s" :help "show the current player's assets"}
+  {:command "commands" :alias "c" :help "display list of available commands"}
+  {:command "exit" :alias "x" :help "shutdown the game; same as 'quit'"}
+  {:command "help" :alias "h" :help "display commands information"}
+  {:command "load" :alias "" :help "replace current game with saved one"}
   {:command "map" :alias "m" :help "show the star map"}
   {:command "order" :alias "o" :help "show the order of play"}
-  {:command "score" :alias "" :help "show the current score"}
-  {:command "save" :alias "" :help "save the current state of the game"}
-  {:command "load" :alias "" :help "replace current game with saved one"}
-  {:command "commands" :alias "c" :help "display list of available commands"}
-  {:command "help" :alias "h" :help "display commands information"}
   {:command "restart" :alias "" :help "restart the game"}
   {:command "quit" :alias "q" :help "shutdown the game; same as 'exit'"}
-  {:command "exit" :alias "x" :help "shutdown the game; same as 'quit'"}])
+  {:command "save" :alias "" :help "save the current state of the game"}
+  {:command "score" :alias "" :help "show the current score"}
+  {:command "stock" :alias "s" :help "show the current player's assets"}])
 
 (defn get-commands
   ([]

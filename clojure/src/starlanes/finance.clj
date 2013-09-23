@@ -9,6 +9,12 @@
    :share-mod 0.0
    :units 0})
 
+(defn get-new-company
+  ([]
+    (company-factory))
+  ([name units share-mod]
+    (assoc (company-factory) :name name :units units :share-mod share-mod)))
+
 (defn display-stock [game-data]
   (util/display
     (str \newline "Here's your current stock: " \newline \newline))
@@ -41,14 +47,11 @@
         next-index (inc current-count)])
   )
 
-(defn create-new-company [name units share-mod]
-  (assoc (company-factory) :name name :units units :share-mod share-mod))
-
 (defn add-company [units share-mod game-data]
   (let [available (game-data :companies-queue)
         company-name (first available)
         game-data (conj game-data {:companies-queue (rest available)})
-        company (create-new-company company-name units share-mod)
+        company (get-new-company company-name units share-mod)
         companies (concat (game-data :companies) [company])]
     [company-name (conj game-data {:companies companies})]))
 
@@ -67,67 +70,45 @@
         companies (filter-company company-name (game-data :companies))]
     (conj game-data {:companies companies :companies-queue companies-queue})))
 
-(defn announce-new-company [company-name units type]
+(defn announce-new-company [company-name]
   (util/beep)
   (util/display
     (str
-      "A new company has been formed!" \newline \newline
-      company-name " was founded by " units
-      " " type "." \newline
-      )))
+      "A new shipping company has been formed!" \newline
+      "It's name is '" company-name "'." \newline)))
 
 (defn announce-player-bonus [current-player company-name units mod]
   (util/display
     (str
-      \newline (current-player :name)
-      ", you have been awarded " units " share(s) in " \newline
+      \newline
+      (current-player :name) ", you have been awarded "
+      const/founding-shares " share(s) in " \newline
       company-name ", currently valued at " \newline
       (* units mod) " "
       const/currency-name "s each." \newline \newline))
   (util/input const/continue-prompt))
 
-(defn make-announcements [current-player company-name units mod type]
-  (announce-new-company company-name units type)
+(defn make-announcements [current-player company-name units mod]
+  (announce-new-company company-name)
   (announce-player-bonus current-player company-name units mod))
 
 (defn update-player-stock [current-player units game-data]
   game-data
   )
 
-(defn create-star-company
-  "Update the game data with a new company created from adjacent outposts."
-  [keyword-coord current-player game-data]
-  (let [units 1
-        [company-name game-data] (add-company
-                                   units
-                                   const/share-modifier-star
-                                   game-data)
-        item-char (str (first company-name))]
-    (make-announcements
-      current-player company-name units const/share-modifier-star
-      "star-proximity base")
-    (update-player-stock
-      current-player
-      units
-      (game-map/update-coords
-        keyword-coord
-        item-char
-        game-data))))
-
-(defn create-outpost-company
-  "Update the game data with a new company created from adjacent outposts."
-  [keyword-coord current-player game-data]
+(defn create-company
+  "Creating a company should only ever happen if all attempts have been made
+  to identify possibly merges, first. As such, there should never be another
+  company in the immediate neighborhood (adjoining spaces) of a new company;
+  there should only be stars and/or outposts."
+  [keyword-coord current-player share-modifier game-data]
   (let [outpost-coords (map first (game-map/get-neighbor-outposts
                                     keyword-coord game-data))
         units (count outpost-coords)
-       [company-name game-data] (add-company
-                                  units
-                                  const/share-modifier-outpost
-                                  game-data)
-       item-char (str (first company-name))]
+        [company-name game-data] (add-company units share-modifier game-data)
+        item-char (str (first company-name))]
     (make-announcements
-      current-player company-name (inc units) const/share-modifier-outpost
-      "outposts")
+      current-player company-name (inc units) share-modifier)
     (update-player-stock
       current-player
       units
@@ -136,10 +117,22 @@
         item-char
         game-data))))
 
+(defn create-star-company
+  "Update the game data with a new company created from adjacent outposts."
+  [keyword-coord current-player game-data]
+  (create-company
+    keyword-coord current-player const/share-modifier-star game-data))
+
+(defn create-outpost-company
+  "Update the game data with a new company created from adjacent outposts."
+  [keyword-coord current-player game-data]
+  (create-company
+    keyword-coord current-player const/share-modifier-outpost game-data))
+
 (defn update-company-share-mod []
   )
 
-(defn perform-company-merger
+(defn merge-companies
   ""
   [keyword-coord current-player game-data]
   (const/items :outpost))
