@@ -77,6 +77,13 @@
       #(first (util/filter-item % item-char))
       (game-data :star-map))))
 
+(defn get-company-coords [game-data]
+  (sort
+    (flatten
+      (map
+        (fn [x] (get-item-coords x game-data))
+        (util/get-companies-letters)))))
+
 (defn get-star-coords [game-data]
   (get-item-coords (const/items :star) game-data))
 
@@ -134,30 +141,36 @@
 (defn get-item-neighbors [keyword-coord game-data]
   (map (fn [x] [x (get-item x game-data)]) (get-neighbors keyword-coord)))
 
-(defn company? [xy-coord])
-
-(defn star? [xy-coord]
+(defn company? [item]
   (cond
-    (= (second xy-coord) (const/items :star)) true
+    (util/in? (util/get-companies-letters) item) true
     :else false))
 
-(defn outpost? [xy-coord]
+(defn star? [item]
   (cond
-    (= (second xy-coord) (const/items :outpost)) true
+    (= item (const/items :star)) true
+    :else false))
+
+(defn outpost? [item]
+  (cond
+    (= item (const/items :outpost)) true
     :else false))
 
 (defn get-neighbor-companies [keyword-coord game-data]
-  (filter company? (get-item-neighbors keyword-coord game-data)))
+  (filter (comp company? second) (get-item-neighbors keyword-coord game-data)))
 
 (defn get-neighbor-stars [keyword-coord game-data]
-  (filter star? (get-item-neighbors keyword-coord game-data)))
+  (filter (comp star? second) (get-item-neighbors keyword-coord game-data)))
 
 (defn get-neighbor-outposts [keyword-coord game-data]
-  (filter outpost? (get-item-neighbors keyword-coord game-data)))
+  (filter (comp outpost? second) (get-item-neighbors keyword-coord game-data)))
 
 (defn near-item? [keyword-coord coords-for-items]
   (let [items-neighbors (flatten (map get-neighbors coords-for-items))]
     (util/in? items-neighbors keyword-coord)))
+
+(defn next-to-company? [keyword-coord game-data]
+  (near-item? keyword-coord (get-company-coords game-data)))
 
 (defn next-to-star? [keyword-coord game-data]
   (near-item? keyword-coord (get-star-coords game-data)))
@@ -165,7 +178,6 @@
 (defn next-to-outpost? [keyword-coord game-data]
   (near-item? keyword-coord (get-outpost-coords game-data)))
 
-(defn next-to-company? [keyword-coord game-data]
-  )
+
 
 

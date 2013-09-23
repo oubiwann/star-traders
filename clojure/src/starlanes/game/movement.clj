@@ -49,14 +49,20 @@
   "Return new game data with a contained star-map that takes into consideration
   the move just passed."
   [move game-data]
-  (let [keyword-coord (util/move->keyword move)]
+  (let [keyword-coord (util/move->keyword move)
+        companies (game-map/get-neighbor-companies keyword-coord game-data)
+        company-count (count (distinct (map second companies)))]
     (cond
-      ; is the move next to a company?
+      ; is the move next to a company? more than one? or just one?
       (game-map/next-to-company? keyword-coord game-data)
-        (finance/merge-companies
-          keyword-coord (get-current-player game-data) game-data)
-      ; more than one company?
-      ; which company has the highest value?
+        (cond
+          (> company-count 1)
+            (finance/merge-companies
+              keyword-coord (get-current-player game-data) companies game-data)
+          :else
+            (finance/expand-company
+              keyword-coord (get-current-player game-data) (first companies)
+              game-data))
       ; is the move next to a star?
       (game-map/next-to-star? keyword-coord game-data)
         (finance/create-star-company

@@ -20,7 +20,7 @@
    :player-order []
    :move 0
    :companies []
-   :companies-queue (finance/get-companies)
+   :companies-queue (util/get-companies)
    :share-value {}
    :rand (util/random const/seed)})
 

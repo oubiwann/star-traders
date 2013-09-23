@@ -5,15 +5,16 @@
 
 
 (deftest test-get-commands
-  (is (= [["stock" "s"] ["map" "m"] ["order" "o"] ["score"] ["save"] ["load"]
-          ["commands" "c"] ["help" "h"] ["restart"] ["quit" "q"] ["exit" "x"]]
+  (is (= '(("commands" "c") ("exit" "x") ("help" "h") ("load") ("map" "m")
+           ("order" "o") ("restart") ("quit" "q") ("save") ("score")
+           ("stock" "s"))
          (game/get-commands)))
   (is (= ["stock" "s"] (game/get-commands "stock")))
   (is (= ["load"] (game/get-commands "load"))))
 
 (deftest test-get-legal-commands
-  (is (= ["stock" "s" "map" "m" "order" "o" "score" "save" "load" "commands" "c"
-          "help" "h" "restart" "quit" "q" "exit" "x"]
+  (is (= ["commands" "c" "exit" "x" "help" "h" "load" "map" "m" "order" "o"
+          "restart" "quit" "q" "save" "score" "stock" "s"]
          (game/get-legal-commands))))
 
 (deftest test-legal?

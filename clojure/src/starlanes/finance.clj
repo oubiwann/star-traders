@@ -39,9 +39,6 @@
 (defn display-value [value]
   )
 
-(defn get-companies []
-  (take const/max-companies const/companies))
-
 (defn get-next-company [game-data]
   (let [current-count (count (game-data :companies))
         next-index (inc current-count)])
@@ -134,6 +131,27 @@
 
 (defn merge-companies
   ""
-  [keyword-coord current-player game-data]
-  (const/items :outpost))
+  [keyword-coord current-player companies game-data]
+  (util/display (str \newline "Merging companies ..." \newline))
+  (util/input const/continue-prompt)
+  game-data)
+
+(defn expand-company
+  ""
+  [keyword-coord current-player company-item-data game-data]
+  (let [company-letter (second company-item-data)
+        outpost-coords (map first (game-map/get-neighbor-outposts
+                                    keyword-coord game-data))]
+    ; XXX this is an insufficient final solution; see the following issue for
+    ; more details:
+    ;   https://github.com/oubiwann/star-traders/issues/7
+    ; we're going to want to create a function that takes a list of neighbor
+    ; outposts, converts them to the company, and then recursing on all those
+    ; outposts' neighbors that are outposts, performing the same action
+    (game-map/multi-update-coords
+      (concat outpost-coords [keyword-coord])
+      company-letter
+      game-data)))
+
+
 

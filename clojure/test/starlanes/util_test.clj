@@ -128,7 +128,17 @@
   (is (= 1 (util/get-max-total-moves 1 1)))
   (is (= 0 (util/get-max-total-moves 0 0))))
 
+(deftest test-get-companies
+  (is (= ["Altair Starways"
+          "Betelgeuse, Ltd."
+          "Capella Cargo Co."
+          "Denebola Shippers"
+          "Eridani Expediters"]
+         (util/get-companies))))
 
+(deftest test-get-companies-letters
+  (is (= ["A" "B" "C" "D" "E"]
+         (util/get-companies-letters))))
 
 
 

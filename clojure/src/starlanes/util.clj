@@ -6,11 +6,11 @@
 
 (def fake-game-data
   {:star-map
-    {:a1 "*", :a2 ".", :a3 ".", :a4 ".", :a5 ".",
-     :b1 ".", :b2 ".", :b3 ".", :b4 ".", :b5 ".",
+    {:a1 "*", :a2 ".", :a3 "B", :a4 ".", :a5 "C",
+     :b1 ".", :b2 ".", :b3 "B", :b4 ".", :b5 ".",
      :c1 ".", :c2 ".", :c3 "*", :c4 ".", :c5 "+",
-     :d1 ".", :d2 ".", :d3 ".", :d4 ".", :d5 ".",
-     :e1 ".", :e2 ".", :e3 ".", :e4 "*", :e5 "."},
+     :d1 "A", :d2 ".", :d3 ".", :d4 ".", :d5 ".",
+     :e1 "A", :e2 "A", :e3 ".", :e4 "*", :e5 "."},
    :total-moves 0,
    :players [
     {:stock nil, :name "Alice", :cash 0.0},
@@ -175,6 +175,11 @@
   ([max-turns player-count]
     (* max-turns player-count)))
 
+(defn get-companies []
+  (take const/max-companies const/companies))
 
-
+(defn get-companies-letters []
+  (map
+    (comp str first)
+    (get-companies)))
 

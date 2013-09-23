@@ -25,14 +25,6 @@
     (is (= 6282.0 (finance/compute-value assets)))
     (is (= 6282.0 (finance/compute-value (first assets) (second assets))))))
 
-(deftest test-get-companies
-  (is (= ["Altair Starways"
-          "Betelgeuse, Ltd."
-          "Capella Cargo Co."
-          "Denebola Shippers"
-          "Eridani Expediters"]
-         (finance/get-companies))))
-
 (deftest test-get-next-company
   )
 
