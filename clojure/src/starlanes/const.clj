@@ -62,7 +62,7 @@
 
 (def max-companies 5)
 (def share-modifier-star 500)
-(def share-modifier-outpost 100)
+(def share-modifier-base 100)
 (def founding-shares 5)
 (def dividend-percentage 5)
 (def max-stock-value 3000)

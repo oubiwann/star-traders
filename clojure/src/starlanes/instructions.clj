@@ -77,7 +77,7 @@ adjacent to a star adds $"
 (str const/share-modifier-star)
 " per share, and each new
 outpost adds $"
-(str const/share-modifier-outpost)
+(str const/share-modifier-base)
 " per share to the market value of the
 stock of that company.
 "))
