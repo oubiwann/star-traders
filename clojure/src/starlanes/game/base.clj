@@ -21,12 +21,24 @@
    :move 0
    :companies []
    :companies-queue (util/get-companies)
-   :share-value {}
+   :stock-exchange {}
    :rand (util/random const/seed)})
 
 (defn create-star-map-for-game [game-data]
   (let [star-map (game-map/create-star-map game-data)]
     (conj game-data {:star-map star-map})))
+
+(defn set-new-stock-exchange
+  ""
+  [game-data]
+  (let [companies-letters (map first (util-get-companies))
+        players-names (map (fn [x] (x :name)) (game-data :players))]
+    (conj
+      game-data
+      {:stock-exchange
+        (finance/get-new-exchange
+          companies-letters
+          players-names)})))
 
 (defn set-new-players
   ([]
@@ -40,11 +52,11 @@
         game-with-star-map (create-star-map-for-game game-init)
         game-with-players (set-new-players game-with-star-map)
         game-with-player-order (player/determine-player-order game-with-players)
-        ]
+        game-with-stock-exchange (set-new-stock-exchange game-with-player-order)]
     (cond
       first-time? (instructions/display?)
       :else (util/input (str \newline const/continue-prompt)))
-    game-with-player-order))
+    game-with-stock-exchange))
 
 (defn get-player-move []
   (util/input (str \newline "What is your move? ")))
