@@ -76,10 +76,9 @@
   (is (= [:a1 "*"] (util/filter-item [:a1 "*"] (const/items :star))))
   (is (= [:a1 "+"] (util/filter-item [:a1 "+"] (const/items :outpost))))
   (is (= nil (util/filter-item [:a1 "+"] (const/items :star))))
-  (is (= [nil nil nil nil nil nil nil nil nil
-          [:c3 "*"] nil nil nil nil [:e4 "*"]
-          nil nil nil nil nil nil nil [:a1 "*"]
-          nil nil]
+  (is (= [nil nil nil nil nil nil nil nil nil [:c3 "*"]
+          nil nil nil nil [:e4 "*"] nil nil nil [:d2 "*"]
+          nil nil nil [:a1 "*"] nil nil]
          (map #(util/filter-item % (const/items :star))
          (util/fake-game-data :star-map)))))
 
@@ -140,5 +139,7 @@
   (is (= ["A" "B" "C" "D" "E"]
          (util/get-companies-letters))))
 
-
+(deftest test-count-occurances
+  (is (= {3 1, 2 2, 1 3}
+         (util/count-occurances [1 1 1 2 2 3]))))
 
