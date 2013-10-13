@@ -4,7 +4,7 @@
             [starlanes.util :as util]))
 
 
-(defn exchange-factory
+(defn get-new-exchange
   ([companies-letters]
     (util/get-map-of-maps companies-letters))
   ([companies-letters players-names]

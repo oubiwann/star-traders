@@ -4,22 +4,22 @@
             [starlanes.util :as util]))
 
 
-(deftest test-exchange-factory
-  (is (= [:A] (sort (keys (finance/exchange-factory ["A"])))))
-  (is (= [:A :B] (sort (keys (finance/exchange-factory ["A" "B"])))))
-  (is (= [:A :B :C] (sort (keys (finance/exchange-factory ["A" "B" "C"])))))
+(deftest test-get-new-exchange
+  (is (= [:A] (sort (keys (finance/get-new-exchange ["A"])))))
+  (is (= [:A :B] (sort (keys (finance/get-new-exchange ["A" "B"])))))
+  (is (= [:A :B :C] (sort (keys (finance/get-new-exchange ["A" "B" "C"])))))
   (is (= [:Alice :Bob]
-         (sort (keys ((finance/exchange-factory ["A"] ["Alice" "Bob"]) :A)))))
+         (sort (keys ((finance/get-new-exchange ["A"] ["Alice" "Bob"]) :A)))))
   (is (= [:Alice :Bob :Carol]
          (sort
           (keys
-            ((finance/exchange-factory
+            ((finance/get-new-exchange
               ["A" "B"]
               ["Alice" "Bob" "Carol"]) :B)))))
   (is (= [:Alice :Bob :Carol :Dave]
          (sort
           (keys
-            ((finance/exchange-factory
+            ((finance/get-new-exchange
               ["A" "B" "C"]
               ["Alice" "Bob" "Carol" "Dave"]) :C))))))
 
