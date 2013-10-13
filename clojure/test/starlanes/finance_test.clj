@@ -47,9 +47,6 @@
   (is (= 100 (finance/get-player-shares "C" "Carol" util/fake-finance-data)))
   (is (= 0 (finance/get-player-shares "Z" "Bob" util/fake-finance-data))))
 
-(deftest test-get-new-holdings
-  )
-
 (deftest test-get-new-company
   (let [result (finance/get-new-company)]
     (is (= (result :name) ""))
@@ -60,19 +57,10 @@
     (is (= (result :units) 2))
     (is (= (result :share-mod) 25.00))))
 
-(deftest compute-stock-value
-  )
-
-(deftest compute-stocks-value
-  )
-
 (deftest test-compute-value
   (let [assets [1000 [{:stock 12 :value 23.50} {:stock 100 :value 50}]]]
     (is (= 6282.0 (finance/compute-value assets)))
     (is (= 6282.0 (finance/compute-value (first assets) (second assets))))))
-
-(deftest test-get-next-company
-  )
 
 (deftest test-add-company
   (is (= [] (util/fake-game-data :companies)))
@@ -104,9 +92,6 @@
     (is (= [{:share-mod 22.0 :units 4 :name "Be"}] (game-data :companies)))
     (is (= ["Al" "Ca" "De" "Er"] (game-data :companies-queue)))))
 
-(deftest test-get-players-shares
-  )
-
 (deftest test-get-companies-base-counts
   (let [counts (finance/get-companies-base-counts util/fake-game-data)]
     (is (= {"A" 3, "C" 1, "B" 2} counts))
@@ -135,12 +120,6 @@
   (is (= 1800 (finance/get-share-value "A" util/fake-game-data)))
   (is (= 700 (finance/get-share-value "B" util/fake-game-data)))
   (is (= 100 (finance/get-share-value "C" util/fake-game-data)))
-  )
-
-(deftest test-get-company-value
-  )
-
-(deftest test-get-companies-values
   )
 
 (deftest test-get-filtered-companies
