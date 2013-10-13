@@ -5,10 +5,10 @@
 
 
 (deftest test-get-remaining-moves
-  (is (= 15 (game/get-remaining-moves util/fake-game-data))))
+  (is (= 14 (game/get-remaining-moves util/fake-game-data))))
 
 (deftest test-moves-remain-many
-  (is (= 15 (game/-moves-remain? util/fake-game-data))))
+  (is (= 14 (game/-moves-remain? util/fake-game-data))))
 
 (deftest test-moves-remain-some
   (let [max-moves 10
