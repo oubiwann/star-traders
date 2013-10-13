@@ -9,7 +9,7 @@
     {:a1 "*", :a2 ".", :a3 "B", :a4 ".", :a5 "C",
      :b1 ".", :b2 ".", :b3 "B", :b4 ".", :b5 ".",
      :c1 ".", :c2 ".", :c3 "*", :c4 ".", :c5 "+",
-     :d1 "A", :d2 ".", :d3 ".", :d4 ".", :d5 ".",
+     :d1 "A", :d2 "*", :d3 ".", :d4 ".", :d5 ".",
      :e1 "A", :e2 "A", :e3 ".", :e4 "*", :e5 "."},
    :total-moves 0,
    :players [
@@ -22,6 +22,17 @@
    :companies [],
    :share-value {},
    :rand nil})
+
+(def fake-finance-data
+  {:A
+    {:Alice {:shares 1000}
+     :Bob {:shares 500}
+     :Carol {:shares 100}}
+   :B
+    {:Carol {:shares 1000}}
+   :C
+    {:Bob {:shares 500}
+     :Carol {:shares 100}}})
 
 (defn display [data]
   (.print (System/out) data))
@@ -183,3 +194,15 @@
     (comp str first)
     (get-companies)))
 
+(defn count-occurances [data]
+  (reduce
+    #(assoc %1 %2 (inc (%1 %2 0)))
+    {}
+    data))
+
+(defn get-map-of-maps
+  ""
+  ([map-keys]
+    (get-map-of-maps map-keys {}))
+  ([map-keys second-map]
+    (into {} (map (fn [x] [(keyword x) second-map]) map-keys))))
