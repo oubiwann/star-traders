@@ -77,6 +77,15 @@
       #(first (util/filter-item % item-char))
       (game-data :star-map))))
 
+(defn company-data? [coord-data]
+  (util/in? (util/get-companies-letters) (second coord-data)))
+
+(defn get-companies-data [game-data]
+  (sort
+    (filter
+      company-data?
+      (game-data :star-map))))
+
 (defn get-company-coords [game-data]
   (sort
     (flatten
