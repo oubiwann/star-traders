@@ -31,7 +31,7 @@
 (defn set-new-stock-exchange
   ""
   [game-data]
-  (let [companies-letters (map first (util-get-companies))
+  (let [companies-letters (map first (util/get-companies))
         players-names (map (fn [x] (x :name)) (game-data :players))]
     (conj
       game-data
@@ -46,17 +46,22 @@
   ([game-data]
     (conj game-data {:players (doall (player/get-new-players))})))
 
-(defn setup-game [& {:keys [first-time?] :or {first-time? true}}]
-  (util/clear-screen)
+(defn setup-game-data
+  ""
+  []
   (let [game-init (game-data-factory)
         game-with-star-map (create-star-map-for-game game-init)
         game-with-players (set-new-players game-with-star-map)
-        game-with-player-order (player/determine-player-order game-with-players)
-        game-with-stock-exchange (set-new-stock-exchange game-with-player-order)]
+        game-with-player-order (player/determine-player-order game-with-players)]
+    (set-new-stock-exchange game-with-player-order)))
+
+(defn setup-game [& {:keys [first-time?] :or {first-time? true}}]
+  (util/clear-screen)
+  (let [game-data (setup-game-data)]
     (cond
       first-time? (instructions/display?)
       :else (util/input (str \newline const/continue-prompt)))
-    game-with-stock-exchange))
+    game-data))
 
 (defn get-player-move []
   (util/input (str \newline "What is your move? ")))
